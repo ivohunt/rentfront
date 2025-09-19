@@ -32,8 +32,8 @@
 </template>
 
 <script>
-import axios from "axios";
 import AlertSad from "@/components/alert/AlertSad.vue";
+import LoginService from "@/service/LoginService.js";
 
 export default {
   name: 'LoginView',
@@ -42,33 +42,55 @@ export default {
     return {
       email: '',
       password: '',
-      errorMessage: ''
+      errorMessage: '',
+
+      loginResponse: {
+        userId: '',
+        roleName: ''
+      }
     }
   },
+
   methods: {
 
     login() {
 
       if (this.email.length && this.password.length > 0) {
-        axios.get('login',).then().catch();
+        LoginService.sendLoginRequest(this.email, this.password)
+            .then(response =>)
+            .catch()
       } else {
         this.handleFieldsIncorrectInputAlert()
       }
 
+    }
 
-    },
-
-    handleFieldsIncorrectInputAlert() {
-      this.errorMessage = "Täida kõik väljad"
-      setTimeout(this.resetErrorMessage, 2000)
-    },
-
-    resetErrorMessage() {
-      this.errorMessage = ''
-    },
-
-  },
-  mounted() {
   }
+  ,
+
+  handleLoginRequestResponse(response) {
+    this.loginResponse = response.data
+    sessionStorage.setItem('userId', this.loginResponse.userId)
+    sessionStorage.setItem('roleName', this.loginResponse.roleName)
+
+  }
+  ,
+
+  handleFieldsIncorrectInputAlert() {
+    this.errorMessage = "Täida kõik väljad"
+    setTimeout(this.resetErrorMessage, 2000)
+  }
+  ,
+
+  resetErrorMessage() {
+    this.errorMessage = ''
+  }
+  ,
+
+}
+,
+mounted()
+{
+}
 }
 </script>
