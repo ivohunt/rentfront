@@ -7,14 +7,14 @@
 
     <div class="row justify-content-center">
       <div class="col col-4">
-
+        <AlertSad :message="errorMessage"/>
         <div class="form-floating mb-3 ">
           <input v-model="email" type="email" class="form-control" placeholder="name@example.com">
           <label for="floatingInput">Email aadress</label>
         </div>
 
         <div class="form-floating mb-3">
-          <input type="password" class="form-control" placeholder="Password">
+          <input v-model="password" type="password" class="form-control" placeholder="Password">
           <label for="floatingPassword">Parool</label>
         </div>
 
@@ -33,25 +33,39 @@
 
 <script>
 import axios from "axios";
+import AlertSad from "@/components/alert/AlertSad.vue";
 
 export default {
   name: 'LoginView',
+  components: {AlertSad},
   data() {
     return {
       email: '',
-      password: ''
+      password: '',
+      errorMessage: ''
     }
   },
   methods: {
 
     login() {
-      // todo: kontrolli, kas on mõtet saata backile sõnum sisse logimiseks
-      // todo: Kui jah siis saata axios get sõnum
-      // todo:
-      // todo:
-      axios.get().then().catch()
-    }
 
+      if (this.email.length && this.password.length > 0) {
+        axios.get().then().catch();
+      } else {
+        this.handleFieldsIncorrectInputAlert()
+      }
+
+
+    },
+
+    handleFieldsIncorrectInputAlert() {
+      this.errorMessage = "Täida kõik väljad"
+      setTimeout(this.resetErrorMessage, 2000)
+    },
+
+    resetErrorMessage() {
+      this.errorMessage = ''
+    },
 
   },
   mounted() {
