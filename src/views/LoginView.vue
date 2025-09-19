@@ -1,41 +1,59 @@
 <template>
-  <div class="container text-center">
-    <div class="row">
+
+  <div class="container justify-content-center text-center">
+    <div class="row justify-content-center">
       <h1>Logi sisse</h1>
     </div>
 
-    <row class="row justify-content-center">
-      <div class="form-floating col-4 mb-3 ">
-        <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-        <label for="floatingInput">Email aadress</label>
-      </div>
-    </row>
+    <div class="row justify-content-center">
+      <div class="col col-4">
 
-    <row class="row justify-content-center">
-      <div class="form-floating col-4 mb-3">
-        <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
-        <label for="floatingPassword">Parool</label>
-      </div>
-    </row>
-    <row >
-      <div class="d-grid gap-2 col-2 mx-auto mb-3">
-      <button @click="" type="button" class="btn btn-primary">Logi sisse</button>
-      </div>
-      Ei ole kasutaja? <a href="">Loo uus kasutaja</a>
-    </row>
+        <div class="form-floating mb-3 ">
+          <input v-model="email" type="email" class="form-control" placeholder="name@example.com">
+          <label for="floatingInput">Email aadress</label>
+        </div>
 
+        <div class="form-floating mb-3">
+          <input type="password" class="form-control" placeholder="Password">
+          <label for="floatingPassword">Parool</label>
+        </div>
+
+        <button @click="login" type="button" class="btn btn-primary mb-3">Logi sisse</button>
+
+        <div>
+          Ei ole kasutaja? <a href="">Loo uus kasutaja</a>
+        </div>
+
+      </div>
+    </div>
 
   </div>
 
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: 'LoginView',
   data() {
-    return {}
+    return {
+      email: '',
+      password: ''
+    }
   },
-  methods: {},
+  methods: {
+
+    login() {
+      // todo: kontrolli, kas on mõtet saata backile sõnum sisse logimiseks
+      // todo: Kui jah siis saata axios get sõnum
+      // todo:
+      // todo:
+      axios.get().then().catch()
+    }
+
+
+  },
   mounted() {
   }
 }
