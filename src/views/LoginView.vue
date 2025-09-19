@@ -50,7 +50,7 @@ export default {
     login() {
 
       if (this.email.length && this.password.length > 0) {
-        axios.get().then().catch();
+        axios.get('login',).then().catch();
       } else {
         this.handleFieldsIncorrectInputAlert()
       }
