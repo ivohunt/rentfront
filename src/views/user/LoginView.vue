@@ -6,6 +6,7 @@
     </div>
 
     <div class="row justify-content-center">
+
       <div class="col col-4">
         <AlertSad :message="errorMessage"/>
         <div class="form-floating mb-3 ">
@@ -21,7 +22,7 @@
         <button @click="login" type="button" class="btn btn-primary mb-3">Logi sisse</button>
 
         <div>
-          Ei ole kasutaja? <a href="">Loo uus kasutaja</a>
+          Ei ole kasutaja? <a href="/registration">Loo uus kasutaja</a>
         </div>
 
       </div>
