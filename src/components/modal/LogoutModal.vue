@@ -12,7 +12,8 @@
       <template #body>
       </template>
 
-      <template #footer>
+      <template #buttons>
+        <button type="button" class="btn btn-dark me-3" @click="$emit('event-close-modal')">Sulge</button>
         <button type="button" class="btn btn-primary" @click="$emit('event-execute-logout')">Logi välja</button>
       </template>
 

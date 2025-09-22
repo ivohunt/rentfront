@@ -9,12 +9,12 @@
       <div class="col col-4">
         <AlertSad :message="errorMessage"/>
         <div class="form-floating mb-3 ">
-          <input v-model="email" type="email" class="form-control" placeholder="name@example.com">
+          <input v-model="email" type="email" class="form-control" placeholder="admin@admin.ee">
           <label for="floatingInput">Email aadress</label>
         </div>
 
         <div class="form-floating mb-3">
-          <input v-model="password" type="password" class="form-control" placeholder="Password">
+          <input v-model="password" @keydown.enter="login" type="password" class="form-control" placeholder="Password">
           <label for="floatingPassword">Parool</label>
         </div>
 

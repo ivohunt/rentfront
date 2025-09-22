@@ -1,46 +1,32 @@
 <template>
-  <!-- Modal -->
-  <div v-if="modalIsOpen" class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-
-        <div class="modal-header">
-          <slot name="title"></slot>
-          <button type="button" class="btn-close" @click="$emit('event-close-modal')" aria-label="Sulge"></button>
+  <div>
+    <!-- Modal -->
+    <div v-if="modalIsOpen" class="modal-overlay">
+      <div class="modal-container">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5">
+              <slot name="title"></slot>
+            </h1>
+            <button type="button" class="btn-close" @click="$emit('event-close-modal')" aria-label="Close"/>
+          </div>
+          <div class="modal-body">
+            <slot name="body"></slot>
+          </div>
+          <div class="modal-footer mt-3">
+            <slot name="buttons"></slot>
+          </div>
         </div>
-
-
-        <div class="modal-body">
-          <slot name="body"></slot>
-        </div>
-
-
-        <div class="modal-footer">
-          <slot name="footer"></slot>
-          <button type="button" class="btn btn-secondary" @click="$emit('event-close-modal')">Sulge</button>
-        </div>
-
-
       </div>
     </div>
   </div>
 </template>
 
 <script>
-
-
 export default {
   name: 'Modal',
   props: {
-    modalIsOpen: Boolean,
-  },
-
-  data() {
-    return {
-    }
-  },
-  methods: {},
-  mounted() {
+    modalIsOpen: Boolean
   }
-}
+};
 </script>
