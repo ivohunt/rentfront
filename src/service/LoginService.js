@@ -12,11 +12,4 @@ export default {
         )
     },
 
-    name: 'LoginService',
-    data() {
-        return {}
-    },
-    methods: {},
-    mounted() {
-    }
 }

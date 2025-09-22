@@ -1,6 +1,12 @@
-export default {
+import router from "@/router";
 
-    navigateToHomeView {
-        router.push {name: 'homeRoute'}
-    }
+export default {
+    navigateToLoginView() {
+        router.push({name: 'loginRoute'})
+    },
+
+    navigateToHomeView() {
+        alert("Navigeeeri kodu vaatele, todo")
+        router.push({name: '????'})
+    },
 }

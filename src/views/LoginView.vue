@@ -34,6 +34,7 @@
 <script>
 import AlertSad from "@/components/alert/AlertSad.vue";
 import LoginService from "@/service/LoginService.js";
+import NavigationService from "@/service/NavigationService";
 
 export default {
   name: 'LoginView',
@@ -45,8 +46,13 @@ export default {
       errorMessage: '',
 
       loginResponse: {
-        userId: '',
+        userId: 0,
         roleName: ''
+      },
+
+      errorResponse: {
+        message: '',
+        errorCode: 0
       }
     }
   },
@@ -55,42 +61,39 @@ export default {
 
     login() {
 
-      if (this.email.length && this.password.length > 0) {
+      if (this.email.length > 0 && this.password.length > 0) {
         LoginService.sendLoginRequest(this.email, this.password)
-            .then(response =>)
-            .catch()
+            .then(response => this.handleLoginRequestResponse(response))
+            .catch(error => this.handleLoginRequestError(error));
       } else {
         this.handleFieldsIncorrectInputAlert()
       }
 
+    },
+
+    handleLoginRequestResponse(response) {
+      this.loginResponse = response.data
+      sessionStorage.setItem('userId', this.loginResponse.userId)
+      sessionStorage.setItem('roleName', this.loginResponse.roleName)
+      this.$emit('event-user-logged-in')
+      NavigationService.navigateToHomeView()
+    },
+
+    handleFieldsIncorrectInputAlert() {
+      this.errorMessage = "Täida kõik väljad"
+      setTimeout(this.resetErrorMessage, 2000)
+    },
+
+    resetErrorMessage() {
+      this.errorMessage = ''
+    },
+
+    handleLoginRequestError(error) {
+      this.errorResponse = error.response.data
+      // error.response.status
+      // todo:
     }
-
   }
-  ,
-
-  handleLoginRequestResponse(response) {
-    this.loginResponse = response.data
-    sessionStorage.setItem('userId', this.loginResponse.userId)
-    sessionStorage.setItem('roleName', this.loginResponse.roleName)
-
-  }
-  ,
-
-  handleFieldsIncorrectInputAlert() {
-    this.errorMessage = "Täida kõik väljad"
-    setTimeout(this.resetErrorMessage, 2000)
-  }
-  ,
-
-  resetErrorMessage() {
-    this.errorMessage = ''
-  }
-  ,
-
 }
-,
-mounted()
-{
-}
-}
+
 </script>
