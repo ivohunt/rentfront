@@ -15,7 +15,7 @@
 
 
     <template v-if="isLoggedIn">
-      <font-awesome-icon @click="startLogout" class="cursor-pointed" icon="fa-solid fa-right-from-bracket" />
+      <font-awesome-icon @click="startLogout" type="button" icon="fa-solid fa-right-from-bracket" />
     </template>
 
 
