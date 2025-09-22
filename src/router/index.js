@@ -22,6 +22,8 @@ const routes = [
         name: 'errorRoute',
         component: ErrorView
     },
+
+
 ]
 
 const router = createRouter({
