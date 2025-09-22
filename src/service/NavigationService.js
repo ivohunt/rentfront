@@ -6,7 +6,10 @@ export default {
     },
 
     navigateToHomeView() {
-        alert("Navigeeeri kodu vaatele, todo")
-        router.push({name: '????'})
+        router.push({name: 'homeRoute'})
+    },
+
+    navigateToErrorView() {
+        router.push({name: 'errorRoute'})
     },
 }

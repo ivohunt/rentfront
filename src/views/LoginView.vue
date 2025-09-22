@@ -90,8 +90,13 @@ export default {
 
     handleLoginRequestError(error) {
       this.errorResponse = error.response.data
-      // error.response.status
-      // todo:
+      if (error.response.status === 403 && error.response.data.errorCode === 111 ) {
+        this.message =this.errorResponse.message
+        setTimeout(this.resetErrorMessage, 2000)
+      } else {
+        NavigationService.navigateToErrorView()
+      }
+
     }
   }
 }
