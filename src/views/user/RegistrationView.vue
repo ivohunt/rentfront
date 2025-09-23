@@ -8,6 +8,7 @@
     <div class="row col-4 mx-auto">
 
       <AlertSad :message="errorMessage"/>
+      <AlertGood :message="successMessage"/>
 
       <div class="col">
         <div class="form-floating mb-3">
@@ -38,7 +39,7 @@
 
       <div>
         <div class="form-floating mb-3">
-          <input v-model="user.phone" type="text" class="form-control" placeholder="Telefon">
+          <input v-model="user.telephone" type="text" class="form-control" placeholder="Telefon">
           <label for="floatingInput">Telefon</label>
         </div>
       </div>
@@ -71,20 +72,24 @@
 
 <script>
 import AlertSad from "@/components/alert/AlertSad.vue";
+import UserService from "@/service/UserService";
+import AlertGood from "@/components/alert/AlertGood.vue";
+import NavigationService from "@/service/NavigationService";
 
 export default {
   name: 'RegistrationView',
-  components: {AlertSad},
+  components: {AlertGood, AlertSad},
   data() {
     return {
       passwordRetype: '',
       errorMessage: '',
+      successMessage: '',
 
       user: {
         firstName: '',
         lastName: '',
         email: '',
-        phone: '',
+        telephone: '',
         password: ''
       }
     }
@@ -92,9 +97,16 @@ export default {
   methods: {
 
     registerUser() {
+
+
       this.findIfInputFieldsAreFilled()
       this.findIfPasswordMatch()
-      // UserService.sendPostUserRegistrationRequest(this.user)
+      if (this.errorMessage === '') {
+        UserService.sendPostUserRegistrationRequest(this.user)
+            .then(() => this.handleAddUserResponse())
+            .catch(error => this.handleAddUserError(error))
+      } else NavigationService.navigateToErrorView()
+      NavigationService.navigateToLoginView()
     },
 
 
@@ -105,7 +117,7 @@ export default {
         this.errorMessage = "Sisesta perenimi"
       } else if (this.user.email === '') {
         this.errorMessage = "Sisesta e-maili aadress"
-      } else if (this.user.phone === '') {
+      } else if (this.user.telephone === '') {
         this.errorMessage = "Sisesta telefoninumber"
       } else if (this.user.password === '') {
         this.errorMessage = "Sisesta parool"
@@ -121,9 +133,28 @@ export default {
         setTimeout(this.resetErrorMessage, 4000)
       }
     },
+
+    handleAddUserResponse() {
+      this.successMessage = 'Kasutaja lisatud'
+      setTimeout(this.resetSuccessMessage, 4000)
+    },
+
+
     resetErrorMessage() {
       this.errorMessage = ''
     },
+
+    resetSuccessMessage() {
+      this.successMessage = ''
+    },
+
+    handleAddUserError(error) {
+      this.errorResponse = error.response.data
+      if (error.response.status === 403 && this.errorResponse.errorCode === 333) {
+        this.errorMessage = this.errorResponse.message
+        setTimeout(this.resetErrorMessage, 4000)
+      }
+    }
   },
 
 
