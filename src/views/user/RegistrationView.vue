@@ -5,7 +5,6 @@
     </div>
 
 
-
     <div class="row col-4 mx-auto">
 
       <AlertSad :message="errorMessage"/>
@@ -27,7 +26,6 @@
         </div>
       </div>
     </div>
-
 
 
     <div class="row col-4 mx-auto">
@@ -73,31 +71,46 @@
 
 <script>
 import AlertSad from "@/components/alert/AlertSad.vue";
-import UserService from "@/service/UserService";
 
 export default {
   name: 'RegistrationView',
   components: {AlertSad},
   data() {
     return {
-      passwordRetype:'',
-      errorMessage:'',
+      passwordRetype: '',
+      errorMessage: '',
 
       user: {
-        firstName:'',
-        lastName:'',
-        email:'',
-        phone:'',
-        password:''
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        password: ''
       }
     }
   },
   methods: {
 
     registerUser() {
+      this.findIfInputFieldsAreFilled()
       this.findIfPasswordMatch()
-      UserService.sendPostUserRegistrationRequest(this.user)
+      // UserService.sendPostUserRegistrationRequest(this.user)
+    },
 
+
+    findIfInputFieldsAreFilled() {
+      if (this.user.firstName === '') {
+        this.errorMessage = "Sisesta eesnimi"
+      } else if (this.user.lastName === '') {
+        this.errorMessage = "Sisesta perenimi"
+      } else if (this.user.email === '') {
+        this.errorMessage = "Sisesta e-maili aadress"
+      } else if (this.user.phone === '') {
+        this.errorMessage = "Sisesta telefoninumber"
+      } else if (this.user.password === '') {
+        this.errorMessage = "Sisesta parool"
+      }
+      setTimeout(this.resetErrorMessage, 4000)
     },
 
     findIfPasswordMatch() {
@@ -105,16 +118,14 @@ export default {
         this.passwordRetype = this.user.password;
       } else {
         this.errorMessage = "Paroolid ei kattu";
-        setTimeout(this.resetErrorMessage, 2000)
+        setTimeout(this.resetErrorMessage, 4000)
       }
     },
-
     resetErrorMessage() {
       this.errorMessage = ''
     },
-
   },
-  mounted() {
-  }
+
+
 }
 </script>
