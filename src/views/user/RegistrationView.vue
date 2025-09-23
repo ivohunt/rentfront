@@ -106,6 +106,7 @@ export default {
             .then(() => this.handleAddUserResponse())
             .catch(error => this.handleAddUserError(error))
       } else NavigationService.navigateToErrorView()
+      alert("Kasutaja lisamine õnnestus")
       NavigationService.navigateToLoginView()
     },
 
