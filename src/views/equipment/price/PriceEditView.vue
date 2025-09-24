@@ -1,5 +1,29 @@
 <template>
   <div>
+
+    <div>
+      <table class="table w-25 mx-auto">
+        <thead>
+        <tr>
+          <th scope="col">Kategooria</th>
+          <th scope="col">Hind</th>
+          <th scope="col">Muuda</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="category in categories">
+          <th scope="row">{{ category.name }}</th>
+          <td>{{ category.price }}</td>
+          <td>
+            <font-awesome-icon @click="editCategory" class="mx-3" type="button" icon="fa-sharp fa-pen-to-square"/>
+            <font-awesome-icon @click="deleteCategory" type="button" icon="fa-sharp fa-trash"/>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+
     <div class="row col-6 mx-auto">
 
       <AlertSad :message="errorMessage"/>
@@ -43,7 +67,6 @@ import AlertGood from "@/components/alert/AlertGood.vue";
 import PriceService from "@/service/PriceService";
 import NavigationService from "@/service/NavigationService";
 import SizesDropdown from "@/components/SizesDropdown.vue";
-import {toValue} from "vue";
 
 export default {
   name: 'PriceEditView',
@@ -59,10 +82,16 @@ export default {
         sizeType: ''
       },
 
+      categories:{
+        categoryId:'',
+        name:'',
+        price:''
+      },
+
       category: {
         name: '',
         price: '',
-        sizeType:''
+        sizeType: ''
       }
     }
   },
@@ -116,12 +145,26 @@ export default {
 
         setSizeType(newSizeType) {
           this.category.sizeType = newSizeType
-         },
+        },
+
+        getCategories() {
+          PriceService.sendGetCategoriesRequest()
+              .then(response => this.categories = response.data)
+              .catch(() => NavigationService.navigateToErrorView())
+        },
+
+        deleteCategory(){
+          PriceService.sendDeleteCategoryRequest(this.categories.categoryId)
+              .then(() => this.$emit('event-category-succesfully-deleted', this.categories.name))
+              .catch()
+
+        }
 
       }
   ,
   beforeMount() {
     this.getSizeTypes()
+    this.getCategories()
   },
 
   mounted() {

@@ -2,12 +2,25 @@ import axios from "axios";
 
 export default {
 
-    sendPostAddCategoryRequest(category){
+    sendPostAddCategoryRequest(category) {
         return axios.post('/category', category)
 
 
-},
-    sendGetSizeTypesRequest(){
+    },
+    sendGetSizeTypesRequest() {
         return axios.get('category/size-types')
+    },
+
+    sendGetCategoriesRequest() {
+        return axios.get('/category')
+    },
+
+    sendDeleteCategoryRequest(categoryId) {
+        return axios.delete('/category', {
+            params: {
+                categoryId: categoryId
+            }
+        })
     }
+
 }
