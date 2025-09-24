@@ -3,8 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import LoginView from "@/views/user/LoginView.vue";
 import ErrorView from "@/views/ErrorView.vue";
 import RegistrationView from "@/views/user/RegistrationView.vue";
-import PricesView from "@/views/equipment/price/PricesView.vue";
-
+import PriceEditView from "@/views/equipment/price/PriceEditView.vue";
 
 
 const routes = [
