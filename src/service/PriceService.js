@@ -3,6 +3,11 @@ import axios from "axios";
 export default {
 
     sendPostAddCategoryRequest(category){
-        axios.post('/category',category)
-}
+        return axios.post('/category', category)
+
+
+},
+    sendGetSizeTypesRequest(){
+        return axios.get('category/size-types')
+    }
 }
