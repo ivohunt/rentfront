@@ -23,7 +23,7 @@
 
       <div class="col">
         <div>
-          <SizesDropdown :sizes="sizes" :selected-size-type="sizes.sizeType"
+          <SizesDropdown :sizes="sizes" :selected-size-type="category.sizeType"
                          @event-new-sizetype-selected="setSizeType"/>
         </div>
       </div>
@@ -43,6 +43,7 @@ import AlertGood from "@/components/alert/AlertGood.vue";
 import PriceService from "@/service/PriceService";
 import NavigationService from "@/service/NavigationService";
 import SizesDropdown from "@/components/SizesDropdown.vue";
+import {toValue} from "vue";
 
 export default {
   name: 'PriceEditView',
@@ -52,6 +53,7 @@ export default {
 
       errorMessage: '',
       successMessage: '',
+      selectedSizeType: '',
 
       sizes: {
         sizeType: ''
@@ -59,7 +61,10 @@ export default {
 
       category: {
         name: '',
-        price: 0,
+        price: '',
+        sizeType:''
+
+
       }
     }
   },
@@ -106,9 +111,9 @@ export default {
               .catch(() => NavigationService.navigateToErrorView())
         },
 
-        setSizeType(selectedSizeType) {
-          this.sizes.sizeType = selectedSizeType
-        },
+        setSizeType(newSizeType) {
+          this.category.sizeType = newSizeType
+         },
 
       }
   ,

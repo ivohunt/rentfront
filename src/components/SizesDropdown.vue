@@ -11,7 +11,7 @@ export default {
   name: 'SizesDropdown',
   props: {
     sizes: Array,
-    selectedSizeType: {
+    sizeType: {
       type: String,
       default: ''
     }
