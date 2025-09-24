@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import LoginView from "@/views/user/LoginView.vue";
 import ErrorView from "@/views/ErrorView.vue";
 import RegistrationView from "@/views/user/RegistrationView.vue";
+import PricesView from "@/views/equipment/price/PricesView.vue";
 
 
 
@@ -28,6 +29,12 @@ const routes = [
         path: '/registration',
         name: 'registrationRoute',
         component: RegistrationView
+    },
+
+    {
+        path: '/price-edit',
+        name: 'priceEditRoute',
+        component: PriceEditView
     },
 
 
