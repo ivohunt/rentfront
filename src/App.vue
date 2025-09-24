@@ -8,18 +8,14 @@
 
 
     <router-link to="/">Home</router-link>
-|
+    |
     <template v-if="isAdmin">
-<!--// admin vaated: -->
+      <router-link to="/price-edit">Hinnad & kategooriad</router-link>
     </template>
-
+    |
 
     <template v-if="isLoggedIn">
-      <router-link to="/price-edit">Hinnad & kategooriad</router-link>
-      |
-      <font-awesome-icon @click="startLogout" type="button" icon="fa-solid fa-right-from-bracket" />
-
-
+      <font-awesome-icon @click="startLogout" type="button" icon="fa-solid fa-right-from-bracket"/>
     </template>
 
 
