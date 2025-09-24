@@ -15,7 +15,7 @@
       <div class="col">
         <div class="form-floating">
           <div class="form-floating mb-3">
-            <input v-model="category.price" type="text" class="form-control" placeholder="Hind">
+            <input v-model="category.price" type="number" class="form-control" placeholder="Hind">
             <label for="floatingInput">Hind</label>
           </div>
         </div>
@@ -63,8 +63,6 @@ export default {
         name: '',
         price: '',
         sizeType:''
-
-
       }
     }
   },
