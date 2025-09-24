@@ -89,18 +89,23 @@ export default {
 
         handleAddCategoryResponse() {
           this.successMessage = "Kategooria lisatud"
+          setTimeout(this.resetSuccessMessage, 4000)
         },
 
         handleAddCategoryError(error) {
           this.errorResponse = error.response.data
           if (error.response.status === 403 && this.errorResponse.errorCode === 222) {
-            this.errorMessage = this.errorResponse.errorMessage
+            this.errorMessage = this.errorResponse.message
             setTimeout(this.resetErrorMessage, 4000)
           } else NavigationService.navigateToErrorView()
         },
 
         resetErrorMessage() {
           this.errorMessage = ''
+        },
+
+        resetSuccessMessage() {
+          this.successMessage = ''
         },
 
         getSizeTypes() {
