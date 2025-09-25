@@ -1,22 +1,20 @@
 <template>
   <div>
-
     <div>
       <table class="table w-25 mx-auto">
         <thead>
         <tr>
           <th scope="col">Kategooria</th>
           <th scope="col">Hind</th>
-          <th scope="col">Muuda</th>
+          <th scope="col">Kustuta</th>
         </tr>
         </thead>
         <tbody>
-        <tr v-for="category in categories">
+        <tr v-for="category in categories" :key="category.categoryId">
           <th scope="row">{{ category.categoryName }}</th>
           <td>{{ category.price }}</td>
           <td>
-            <font-awesome-icon @click="editCategory" class="mx-3" type="button" icon="fa-sharp fa-pen-to-square"/>
-            <font-awesome-icon @click="deleteCategory" type="button" icon="fa-sharp fa-trash"/>
+            <font-awesome-icon @click="deleteCategory(category.categoryId)" type="button" icon="fa-sharp fa-trash"/>
           </td>
         </tr>
         </tbody>
@@ -123,6 +121,7 @@ export default {
         },
 
         handleAddCategoryResponse() {
+          this.getCategories()
           this.successMessage = "Kategooria lisatud"
           setTimeout(this.resetSuccessMessage, 4000)
         },
@@ -159,14 +158,27 @@ export default {
           this.successMessage = ''
         },
 
-        deleteCategory(){
-          CategoryService.sendDeleteCategoryRequest(this.categories.categoryId)
-              .then(() => this.$emit('event-category-succesfully-deleted', this.categories.categoryName))
-              .catch()
-        }
+        deleteCategory(categoryId) {
+          this.categories.categoryId = categoryId
+          CategoryService.sendDeleteCategoryRequest(categoryId)
+              .then(() => this.handleCategoryDeleteSuccess())
+              .catch(() => this.handleCategoryDeleteError())
 
-      }
-  ,
+        },
+
+        handleCategoryDeleteSuccess() {
+          this.getCategories()
+          this.successMessage = "Kategooria kustutatud"
+          setTimeout(this.resetSuccessMessage, 3000)
+        },
+
+        handleCategoryDeleteError() {
+          this.errorMessage = "Sellist kategooriat ei leitud"
+          setTimeout(this.resetErrorMessage, 3000)
+        },
+
+      },
+
   beforeMount() {
     this.getSizeTypes()
     this.getCategories()

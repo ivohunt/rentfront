@@ -6,7 +6,7 @@ export default {
 
     isLoggedIn() {
         let roleName = sessionStorage.getItem('roleName');
-        return roleName != null;
+        return roleName !== null;
     },
 
 

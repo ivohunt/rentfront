@@ -48,7 +48,7 @@ export default {
 
       loginResponse: {
         userId: 0,
-        roleName: ''
+        roleName: '',
       },
 
       errorResponse: {
@@ -76,6 +76,7 @@ export default {
       this.loginResponse = response.data
       sessionStorage.setItem('userId', this.loginResponse.userId)
       sessionStorage.setItem('roleName', this.loginResponse.roleName)
+      sessionStorage.setItem('authToken', this.loginResponse.token)
       this.$emit('event-user-logged-in')
       NavigationService.navigateToHomeView()
     },

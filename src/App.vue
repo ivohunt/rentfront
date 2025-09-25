@@ -67,7 +67,9 @@ export default {
 
 
   },
+
   mounted() {
+    this.updateNavMenu()
   }
 }
 </script>
