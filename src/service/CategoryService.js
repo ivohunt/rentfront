@@ -9,7 +9,7 @@ export default {
     },
 
     sendGetCategoriesRequest() {
-        return axios.get('/category')
+        return axios.get('/categories')
     },
 
     sendDeleteCategoryRequest(categoryId) {

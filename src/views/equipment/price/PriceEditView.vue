@@ -12,7 +12,7 @@
         </thead>
         <tbody>
         <tr v-for="category in categories">
-          <th scope="row">{{ category.name }}</th>
+          <th scope="row">{{ category.categoryName }}</th>
           <td>{{ category.price }}</td>
           <td>
             <font-awesome-icon @click="editCategory" class="mx-3" type="button" icon="fa-sharp fa-pen-to-square"/>
@@ -31,7 +31,7 @@
 
       <div class="col">
         <div class="form-floating mb-3">
-          <input v-model="category.name" type="text" class="form-control" placeholder="Kategooria nimi">
+          <input v-model="category.categoryName" type="text" class="form-control" placeholder="Kategooria nimi">
           <label for="floatingInput">Kategooria nimi</label>
         </div>
       </div>
@@ -79,19 +79,23 @@ export default {
       successMessage: '',
       selectedSizeType: '',
 
-      sizes: {
-        sizeTypeId: 0,
-        sizeTypeName: ''
-      },
+      sizes: [
+        {
+          sizeTypeId: 0,
+          sizeTypeName: ''
+        }
+      ],
 
-      categories:{
-        categoryId:0,
-        name:'',
-        price:0
-      },
+      categories: [
+        {
+          categoryId: 0,
+          categoryName: '',
+          price: 0
+        }
+      ],
 
       category: {
-        name: '',
+        categoryName: '',
         price: 0,
         sizeTypeId: 0
       }
@@ -110,7 +114,7 @@ export default {
         },
 
         findIfFieldsAreFilled() {
-          if (this.category.name === '') {
+          if (this.category.categoryName === '') {
             this.errorMessage = "Sisesta kategooria nimi"
           } else if (this.category.price === 0) {
             this.errorMessage = "Sisesta kategooria päevahind"
