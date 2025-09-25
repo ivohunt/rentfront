@@ -135,12 +135,10 @@ export default {
           } else NavigationService.navigateToErrorView()
         },
 
-        resetErrorMessage() {
-          this.errorMessage = ''
-        },
-
-        resetSuccessMessage() {
-          this.successMessage = ''
+        getCategories() {
+          CategoryService.sendGetCategoriesRequest()
+              .then(response => this.categories = response.data)
+              .catch(() => NavigationService.navigateToErrorView())
         },
 
         getSizeTypes() {
@@ -153,17 +151,18 @@ export default {
           this.category.sizeTypeId = selectedSizeTypeId
         },
 
-        getCategories() {
-          CategoryService.sendGetCategoriesRequest()
-              .then(response => this.categories = response.data)
-              .catch(() => NavigationService.navigateToErrorView())
+        resetErrorMessage() {
+          this.errorMessage = ''
+        },
+
+        resetSuccessMessage() {
+          this.successMessage = ''
         },
 
         deleteCategory(){
           CategoryService.sendDeleteCategoryRequest(this.categories.categoryId)
-              .then(() => this.$emit('event-category-succesfully-deleted', this.categories.name))
+              .then(() => this.$emit('event-category-succesfully-deleted', this.categories.categoryName))
               .catch()
-
         }
 
       }
