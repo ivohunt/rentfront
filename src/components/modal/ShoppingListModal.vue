@@ -1,14 +1,10 @@
 <template>
 
-
-
-
-
 </template>
 
 <script>
 export default {
-  name: 'PricesView',
+  name: 'Shopping List',
   data() {
     return {}
   },

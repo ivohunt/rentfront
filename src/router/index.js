@@ -4,6 +4,11 @@ import LoginView from "@/views/user/LoginView.vue";
 import ErrorView from "@/views/ErrorView.vue";
 import RegistrationView from "@/views/user/RegistrationView.vue";
 import PriceEditView from "@/views/equipment/price/PriceEditView.vue";
+import PricesView from "@/views/equipment/price/PricesView.vue";
+import EquipmentView from "@/views/equipment/item/EquipmentView.vue";
+import ItemView from "@/views/equipment/item/ItemView.vue";
+import OrderAdminView from "@/views/order/OrderAdminView.vue";
+import OrderListView from "@/views/order/OrderListView.vue";
 
 
 const routes = [
@@ -34,6 +39,36 @@ const routes = [
         path: '/price-edit',
         name: 'priceEditRoute',
         component: PriceEditView
+    },
+
+    {
+        path: '/prices',
+        name: 'pricesRoute',
+        component: PricesView
+    },
+
+    {
+        path: '/equipment',
+        name: 'equipmentRoute',
+        component: EquipmentView
+    },
+
+    {
+        path: '/item',
+        name: 'itemRoute',
+        component: ItemView
+    },
+
+    {
+        path: '/all-orders',
+        name: 'orderAdminRoute',
+        component: OrderAdminView
+    },
+
+    {
+        path: '/order-history',
+        name: 'orderListRoute',
+        component: OrderListView
     },
 
 
