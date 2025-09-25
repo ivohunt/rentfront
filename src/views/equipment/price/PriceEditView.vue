@@ -47,7 +47,7 @@
 
       <div class="col">
         <div>
-          <SizesDropdown :sizes="sizes" :selected-size-type="category.sizeType"
+          <SizesDropdown :sizes="sizes" :selectedSizeTypeId="category.sizeTypeId"
                          @event-new-sizetype-selected="setSizeType"/>
         </div>
       </div>
@@ -64,9 +64,10 @@
 <script>
 import AlertSad from "@/components/alert/AlertSad.vue";
 import AlertGood from "@/components/alert/AlertGood.vue";
-import PriceService from "@/service/PriceService";
+import CategoryService from "@/service/CategoryService";
 import NavigationService from "@/service/NavigationService";
 import SizesDropdown from "@/components/SizesDropdown.vue";
+import SizeTypeService from "@/service/SizeTypeService";
 
 export default {
   name: 'PriceEditView',
@@ -79,19 +80,20 @@ export default {
       selectedSizeType: '',
 
       sizes: {
-        sizeType: ''
+        sizeTypeId: 0,
+        sizeTypeName: ''
       },
 
       categories:{
-        categoryId:'',
+        categoryId:0,
         name:'',
-        price:''
+        price:0
       },
 
       category: {
         name: '',
-        price: '',
-        sizeType: ''
+        price: 0,
+        sizeTypeId: 0
       }
     }
   },
@@ -101,7 +103,7 @@ export default {
         addCategory() {
           this.findIfFieldsAreFilled()
           if (this.errorMessage === '') {
-            PriceService.sendPostAddCategoryRequest(this.category)
+            CategoryService.sendPostAddCategoryRequest(this.category)
                 .then(() => this.handleAddCategoryResponse())
                 .catch(error => this.handleAddCategoryError(error))
           }
@@ -138,23 +140,23 @@ export default {
         },
 
         getSizeTypes() {
-          PriceService.sendGetSizeTypesRequest()
+          SizeTypeService.sendGetSizeTypesRequest()
               .then(response => this.sizes = response.data)
               .catch(() => NavigationService.navigateToErrorView())
         },
 
-        setSizeType(newSizeType) {
-          this.category.sizeType = newSizeType
+        setSizeType(selectedSizeTypeId) {
+          this.category.sizeTypeId = selectedSizeTypeId
         },
 
         getCategories() {
-          PriceService.sendGetCategoriesRequest()
+          CategoryService.sendGetCategoriesRequest()
               .then(response => this.categories = response.data)
               .catch(() => NavigationService.navigateToErrorView())
         },
 
         deleteCategory(){
-          PriceService.sendDeleteCategoryRequest(this.categories.categoryId)
+          CategoryService.sendDeleteCategoryRequest(this.categories.categoryId)
               .then(() => this.$emit('event-category-succesfully-deleted', this.categories.name))
               .catch()
 

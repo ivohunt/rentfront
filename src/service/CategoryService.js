@@ -7,9 +7,6 @@ export default {
 
 
     },
-    sendGetSizeTypesRequest() {
-        return axios.get('category/size-types')
-    },
 
     sendGetCategoriesRequest() {
         return axios.get('/category')
