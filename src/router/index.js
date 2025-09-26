@@ -88,7 +88,7 @@ const routes = [
     },
 
     {
-        path: '/#FAQ',
+        path: '/FAQ',
         name: 'faqRoute',
         component: FAQView
     },
@@ -98,7 +98,6 @@ const routes = [
         name: 'contactRoute',
         component: ContactView
     },
-
 
 ]
 

@@ -6,20 +6,13 @@
   />
   <nav>
 
-
-    <router-link to="/home">Avaleht</router-link>
+    <router-link to="/">Avaleht</router-link>
     |
     <template v-if="isAdmin">
       <router-link to="/all-orders"> Tellimused</router-link>
       |
-    </template>
-
-    <template v-if="isAdmin">
       <router-link to="/price-edit"> Hinnad & kategooriad</router-link>
       |
-    </template>
-
-    <template v-if="isAdmin">
       <router-link to="/equipment"> Varustus</router-link>
       |
     </template>
@@ -27,29 +20,17 @@
     <template v-if="isCustomer">
       <router-link to="/order-history"> Varasemad tellimused</router-link>
       |
-    </template>
-
-    <template v-if="isCustomer">
       <router-link to="/order"> Laenutus</router-link>
+      |
+      <router-link to="/confirm-order"> Tellimuse kinnitamine</router-link>
       |
     </template>
 
     <template v-if="!isLoggedIn">
       <router-link to="/prices"> Hinnad</router-link>
       |
-    </template>
-
-    <template v-if="isCustomer">
-      <router-link to="/confirm-order"> Tellimuse kinnitamine</router-link>
+      <router-link to="/FAQ"> KKK</router-link>
       |
-    </template>
-
-    <template v-if="!isLoggedIn">
-      <router-link to="/#FAQ"> KKK</router-link>
-      |
-    </template>
-
-    <template v-if="!isLoggedIn">
       <router-link to="/contact"> Kontakt</router-link>
       |
     </template>
@@ -105,8 +86,6 @@ export default {
     closeLogoutModal() {
       this.modalIsOpen = false;
     },
-
-
   },
 
   mounted() {
