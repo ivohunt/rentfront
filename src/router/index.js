@@ -9,6 +9,10 @@ import EquipmentView from "@/views/equipment/item/EquipmentView.vue";
 import ItemView from "@/views/equipment/item/ItemView.vue";
 import OrderAdminView from "@/views/order/OrderAdminView.vue";
 import OrderListView from "@/views/order/OrderListView.vue";
+import OrderAddView from "@/views/order/OrderAddView.vue";
+import OrderConfirmationView from "@/views/order/OrderConfirmationView.vue";
+import FAQView from "@/views/other views/FAQView.vue";
+import ContactView from "@/views/other views/ContactView.vue";
 
 
 const routes = [
@@ -69,6 +73,30 @@ const routes = [
         path: '/order-history',
         name: 'orderListRoute',
         component: OrderListView
+    },
+
+    {
+        path: '/order',
+        name: 'orderAddRoute',
+        component: OrderAddView
+    },
+
+    {
+        path: '/confirm-order',
+        name: 'orderConfirmationRoute',
+        component: OrderConfirmationView
+    },
+
+    {
+        path: '/#FAQ',
+        name: 'faqRoute',
+        component: FAQView
+    },
+
+    {
+        path: '/contact',
+        name: 'contactRoute',
+        component: ContactView
     },
 
 
