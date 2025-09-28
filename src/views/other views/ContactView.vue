@@ -53,8 +53,7 @@ export default {
 
   data() {
     return {
-      items: ['Esmaspäeval 10.00 - 19.30', 'Teisipäeval 10.00 - 19.30', 'Kolmapäeval 10.00 - 19.30',
-        'Neljapäeval 10.00 - 19.30', 'Reedel 10.00 - 20.00', 'Laupäeval 09.30 - 19.30', 'Pühapäeval 09.30 - 18.30']
+      items: ['E-N 10.00 - 19.30', 'R 10.00 - 20.00', 'L 09.30 - 19.30', 'P 09.30 - 18.30']
     }
   },
   computed: {
