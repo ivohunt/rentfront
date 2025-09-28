@@ -1,20 +1,22 @@
 <template>
   <div class="container text-center">
-
-    <table class="table mx-auto w-25" >
-      <thead>
-      <tr>
-        <th scope="col">Varustus</th>
-        <th scope="col">Hind päevas €</th>
-      </tr>
-      </thead>
-      <tbody class="table-group-divider">
-      <tr v-for="category in categories" :key="category.categoryId">
-        <th scope="row"> {{ category.categoryName }}</th>
-        <td>{{ category.price }}</td>
-      </tr>
-      </tbody>
-    </table>
+    <div>
+      <h4>Rendihinnad 2025/2026a hooajale</h4>
+      <table class="table mx-auto w-25">
+        <thead>
+        <tr>
+          <th scope="col">Varustus</th>
+          <th scope="col">Hind päevas €</th>
+        </tr>
+        </thead>
+        <tbody class="table-group-divider">
+        <tr v-for="category in categories" :key="category.categoryId">
+          <th scope="row"> {{ category.categoryName }}</th>
+          <td>{{ category.price }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
