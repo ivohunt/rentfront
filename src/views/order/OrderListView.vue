@@ -5,7 +5,7 @@
         <h2>Minu tellimused</h2>
       </div>
     </div>
-    <table class=" col col-6 table-hover mx-auto">
+    <table class="table w-40 mx-auto table-hover  ">
       <thead>
       <tr>
         <th scope="col">Tellimuse number</th>
