@@ -18,6 +18,7 @@
 </template>
 
 <script>
+
 import EquipmentSizeService from "@/service/EquipmentSizeService";
 import NavigationService from "@/service/NavigationService";
 
@@ -58,8 +59,8 @@ export default {
       EquipmentSizeService.sendGetEquipmentSizesRequest(sizeTypeId)
           .then(response => this.equipmentSizes = response.data)
           .catch(() => NavigationService.navigateToErrorView())
-
     },
+
 
   }
 
