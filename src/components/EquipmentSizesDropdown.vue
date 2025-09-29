@@ -9,8 +9,8 @@
     <!--    36-->
     <select :value="selectedEquipmentSizeId" @change="handleEquipmentSizesDropdownChange" class="form-select">
       <option disabled :value="0">Vali suurus</option>
-      <option v-for="equipmentSize in equipmentSizes" :key="equipmentSize.equipmentSizeId"
-              :value="equipmentSize.equipmentSizeId">
+      <option v-for="equipmentSize in equipmentSizes" :key="equipmentSize.sizeTypeId"
+              :value="equipmentSize.sizeTypeId">
         {{ equipmentSize.equipmentSizeName }}
       </option>
     </select>
@@ -34,7 +34,9 @@ export default {
   watch: {
     selectedSizeTypeId(newSelectedSizeTypeId) {
       if (newSelectedSizeTypeId !== 0) {
-        this.getEquipmentSizes(newSelectedSizeTypeId)
+        this.loadEquipmentSizes(newSelectedSizeTypeId)
+      } else {
+        this.equipmentSizes = []
       }
 
     },
@@ -53,6 +55,12 @@ export default {
   methods: {
     handleEquipmentSizesDropdownChange(event) {
       this.$emit('event-new-equipment-size-selected', Number(event.target.value))
+    },
+
+    loadEquipmentSizes(sizeTypeId){
+      EquipmentSizeService.sendGetEquipmentSizesRequest(sizeTypeId)
+          .then (response => this.equipmentSizes = response.data)
+          .catch (error => {console.error("Error fetching equipment sizes:", error)})
     },
 
   }

@@ -9,13 +9,12 @@
     <div class="row col-4 mx-auto">
       <CategoriesDropdown class="mb-3"
                           :categories="categories"
-                          :selectedCategoryId="selectedCategoryId"
+                          :selectedCategoryId="item.categoryId"
                           @event-new-category-selected="onCategorySelected"/>
 
-      <EquipmentSizesDropdown v-if="equipmentSizes.length > 0"
-                              :equipmentSizes="equipmentSizes"
-                              :selected-size-type-id="selectedSizeTypeId"
-                              @event-new-sizetype-selected="onSizeSelected"
+      <EquipmentSizesDropdown :selectedSizeTypeId="item.sizeTypeId"
+                              :selectedEquipmentSizeId="item.equipmentSizeId"
+                              @event-new-equipment-size-selected="onEquipmentSizeSelected"
       />
     </div>
 
@@ -37,12 +36,13 @@ export default {
   components: {EquipmentSizesDropdown, CategoriesDropdown},
   data() {
     return {
-      categories: Array,
-      equipmentSizes: Array,
-      selectedCategoryId: 0,
-      selectedEquipmentSizeId: 0,
-
-    }
+      categories: [],
+      item: {
+        categoryId: 0,
+        sizeTypeId: 0,
+        equipmentSizeId: 0,
+      }
+    };
   },
   methods: {
 
@@ -53,24 +53,17 @@ export default {
     },
 
     onCategorySelected(categoryId) {
-      this.selectedCategoryId = categoryId
-      EquipmentSizeService.sendGetEquipmentSizesRequest(categoryId)
-          .then(response => {
-            this.equipmentSizes = response.data;
-            this.selectedEquipmentSizeId = 0;
-          })
-          .catch(() => NavigationService.navigateToErrorView())
+      const category = this.categories.find((c) => c.categoryId === categoryId);
+      if (category) {
+        this.item.categoryId = category.categoryId;
+        this.item.sizeTypeId = category.sizeTypeId;
+        this.item.equipmentSizeId = 0; // reset previous selection
+      }
     },
 
-    getEquipmentSizes(sizeTypeId) {
-      EquipmentSizeService.sendGetEquipmentSizesRequest(sizeTypeId)
-          .then(response => this.equipmentSizes = response.data)
-          .catch(() => NavigationService.navigateToErrorView())
-    },
 
-    onEquipmentSizeSelected(sizeId) {
-      this.selectedEquipmentSizeId = sizeId;
-      console.log("Selected size ID:", sizeId)
+    onEquipmentSizeSelected(equipmentSizeId) {
+      this.item.equipmentSizeId = equipmentSizeId;
     },
 
   },
