@@ -5,6 +5,7 @@
         <h2>Minu tellimused</h2>
       </div>
     </div>
+
     <table class=" col col-6 table-hover mx-auto">
       <thead>
       <tr>
@@ -29,6 +30,7 @@
 
 <script>
 import OrderService from "@/service/OrderService";
+import SessionStorageService from "@/service/SessionStorageService";
 
 export default {
   name: 'OrderListView',
@@ -36,6 +38,7 @@ export default {
     return {
       errorMessage: '',
       successMessage: '',
+      userId: sessionStorage.getItem("userId"),
 
       orders: [{
         orderId: 0,
@@ -51,15 +54,15 @@ export default {
   methods: {
     getOrdersBy(userId) {
       //this.resetErrorMessage()
-      OrderService.sendGetOrdersRequest(userId)
+      OrderService.sendGetOrdersRequest(this.userId)
           .then(response => this.orders = response.data)
           .catch(error => console.log(error))
     },
 
-
   },
   mounted() {
-    this.getOrdersBy()
+    this.getOrdersBy(this.userId)
+
   }
 }
 </script>
