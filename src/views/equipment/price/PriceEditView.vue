@@ -11,12 +11,12 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="category in categories">
+        <tr v-for="category in categories" :key="category.categoryId">
           <th scope="row">{{ category.categoryName }}</th>
           <td>{{ category.price }}</td>
           <td>
             <font-awesome-icon @click="editCategory" class="mx-3" type="button" icon="fa-sharp fa-pen-to-square"/>
-            <font-awesome-icon @click="deleteCategory" type="button" icon="fa-sharp fa-trash"/>
+            <font-awesome-icon @click="deleteCategory(category)" type="button" icon="fa-sharp fa-trash"/>
           </td>
         </tr>
         </tbody>
@@ -124,6 +124,7 @@ export default {
 
         handleAddCategoryResponse() {
           this.successMessage = "Kategooria lisatud"
+          this.getCategories()
           setTimeout(this.resetSuccessMessage, 4000)
         },
 
@@ -159,10 +160,18 @@ export default {
           this.successMessage = ''
         },
 
-        deleteCategory(){
-          CategoryService.sendDeleteCategoryRequest(this.categories.categoryId)
-              .then(() => this.$emit('event-category-succesfully-deleted', this.categories.categoryName))
-              .catch()
+        deleteCategory(category){
+          CategoryService.sendDeleteCategoryRequest(category.categoryId)
+              .then(() => {
+                this.$emit('event-category-successfully-deleted')
+                this.successMessage = `Kategooria ${category.categoryName} kustutatud`
+                this.getCategories()
+              })
+              .catch(error => {
+                console.error(error)
+                this.errorMessage = 'Kustutamine ebaõnnestus'
+                setTimeout(this.resetErrorMessage, 4000)
+              })
         }
 
       }

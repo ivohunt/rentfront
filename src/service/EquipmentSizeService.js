@@ -2,7 +2,11 @@ import axios from "axios";
 
 export default {
 
-    sendGetEquipmentSizesRequest() {
-        return axios.get('/equipment-sizes')
+    sendGetEquipmentSizesRequest(sizeTypeId) {
+        return axios.get('/equipment-sizes',{
+            params: {
+                sizeTypeId: sizeTypeId
+            }
+        })
     },
 }

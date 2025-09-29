@@ -45,7 +45,7 @@ export default {
       equipmentSizes: [
         {
           equipmentSizeId: 0,
-          equipmentSizeName: "string"
+          equipmentSizeName: ""
         }
       ]
     }
@@ -54,13 +54,6 @@ export default {
     handleEquipmentSizesDropdownChange(event) {
       this.$emit('event-new-equipment-size-selected', Number(event.target.value))
     },
-
-    getEquipmentSizes(sizeTypeId) {
-      EquipmentSizeService.sendGetEquipmentSizesRequest(sizeTypeId)
-          .then(response => this.equipmentSizes = response.data)
-          .catch(() => NavigationService.navigateToErrorView())
-    },
-
 
   }
 
