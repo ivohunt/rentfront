@@ -5,12 +5,11 @@ export default {
         return axios.post('/order', userId)
     },
 
-    sendGetOrdersRequest(selectedUserId) {
-return axios.get('/order-history', {
-    params: {
-        userId: selectedUserId
-    }
-
-})
+    sendGetOrdersRequest(userId) {
+        return axios.get('/order-history', {
+            params: {
+                userId: userId
+            }
+        })
     }
 }
