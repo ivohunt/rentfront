@@ -1,37 +1,60 @@
 <template>
   <div>
-<!--    todo: eemalda productionist-->
-<!--    1,Suusa suurused-->
-<!--    2,Saapa suurused-->
-<!--    3,Laua suurused-->
-<!--    4,Kiivri suurused-->
-    <select :value="selectedCategoryId" @change="handleCategoryDropdownChange" class="form-select">
-      <option disabled :value="0">Vali kategooria</option>
-      <option v-for="category in categories" :key="category.categoryId" :value="category.categoryId">{{ category.categoryName }}</option>
+    <!--    todo: eemalda productionist-->
+    <!--    size_type_id,name,sequence-->
+    <!--    130-150cm-->
+    <!--    151-170cm-->
+    <!--    171-200cm-->
+    <!--    35-->
+    <!--    36-->
+    <select :value="selectedEquipmentSizeId" @change="handleEquipmentSizesDropdownChange" class="form-select">
+      <option disabled :value="0">Vali suurus</option>
+      <option v-for="equipmentSize in equipmentSizes" :key="equipmentSize.equipmentSizeId" :value="equipmentSize.equipmentSizeId">
+        {{ equipmentSize.equipmentSizeName }}
+      </option>
     </select>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'CategoryDropdown',
+  name: 'EquipmentSizesDropdown',
   props: {
-    categories: Array,
-    selectedCategoryId: {
+    selectedEquipmentSizeId: Number,
+    selectedSizeTypeId: {
       type: Number,
       default: 'default'
     }
   },
+  watch: {
+    selectedSizeTypeId(newSelectedSizeTypeId) {
+      if (newSelectedSizeTypeId !== 0) {
+        this.getEquipmentSizes(newSelectedSizeTypeId)
+      }
+
+    },
+  },
 
   data() {
-    return {}
-  },
-  methods: {
-    handleCategoryDropdownChange(event) {
-      this.$emit('event-new-category-selected', Number(event.target.value))
+    return {
+      equipmentSizes: [
+        {
+          equipmentSizeId: 0,
+          equipmentSizeName: "string"
+        }
+      ]
     }
   },
-  mounted() {
+  methods: {
+    handleEquipmentSizesDropdownChange(event) {
+      this.$emit('event-new-equipment-size-selected', Number(event.target.value))
+    },
+
+    getEquipmentSizes(sizeTypeId) {
+      // too andmed ära, ja pane equipmentSizes massiivi
+    },
+
   }
+
 }
 </script>
