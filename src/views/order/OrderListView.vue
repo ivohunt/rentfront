@@ -35,24 +35,25 @@ export default {
   name: 'OrderListView',
   data() {
     return {
+      userId: Number(sessionStorage.getItem('userId')),
       errorMessage: '',
       successMessage: '',
 
-      orders: [{
-        orderId: 0,
-        orderNumber: '',
-        start: '',
-        end: '',
-        status: ''
-      }
+      orders: [
+        {
+          orderId: 0,
+          orderNumber: '',
+          start: '',
+          end: '',
+          status: ''
+        }
       ]
 
     }
   },
   methods: {
-    getOrdersBy(userId) {
-      //this.resetErrorMessage()
-      OrderService.sendGetOrdersRequest(userId)
+    getOrders() {
+      OrderService.sendGetOrdersRequest(this.userId)
           .then(response => this.orders = response.data)
           .catch(error => console.log(error))
     },
@@ -60,7 +61,7 @@ export default {
 
   },
   mounted() {
-    this.getOrdersBy()
+    this.getOrders()
   }
 }
 </script>

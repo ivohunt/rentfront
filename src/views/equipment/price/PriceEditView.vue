@@ -66,12 +66,12 @@ import AlertSad from "@/components/alert/AlertSad.vue";
 import AlertGood from "@/components/alert/AlertGood.vue";
 import CategoryService from "@/service/CategoryService";
 import NavigationService from "@/service/NavigationService";
-import SizesDropdown from "@/components/SizesDropdown.vue";
+import SizeTypesDropdown from "@/components/SizeTypesDropdown.vue";
 import SizeTypeService from "@/service/SizeTypeService";
 
 export default {
   name: 'PriceEditView',
-  components: {SizesDropdown, AlertGood, AlertSad},
+  components: {SizesDropdown: SizeTypesDropdown, AlertGood, AlertSad},
   data() {
     return {
 

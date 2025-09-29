@@ -36,35 +36,34 @@ import OrderService from "@/service/OrderService";
 
 export default {
   name: 'OrderAdminView',
-  computed: {
-  },
   data() {
     return {
-
+      userId: Number(sessionStorage.getItem('userId')),
       errorMessage: '',
       successMessage: '',
 
-      orders: [{
-        orderId: 0,
-        orderNumber: '',
-        start: '',
-        end: '',
-        status: ''
-      }
+      orders: [
+        {
+          orderId: 0,
+          orderNumber: '',
+          start: '',
+          end: '',
+          status: ''
+        }
       ]
     }
   },
   methods: {
-    getOrdersBy(userId) {
-      OrderService.sendGetOrdersRequest(userId)
+    getOrders() {
+      OrderService.sendGetOrdersRequest(this.userId)
           .then(response => this.orders = response.data)
           .catch(error => console.log(error))
     },
 
   },
   mounted() {
-    this.getOrdersBy()
-    
+    this.getOrders()
+
   }
 }
 </script>

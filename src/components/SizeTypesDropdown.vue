@@ -1,5 +1,10 @@
 <template>
   <div>
+<!--    todo: eemalda productionist-->
+<!--    1,Suusa suurused-->
+<!--    2,Saapa suurused-->
+<!--    3,Laua suurused-->
+<!--    4,Kiivri suurused-->
     <select :value="selectedSizeTypeId" @change="handleSizeDropdownChange" class="form-select">
       <option disabled :value="0">Vali suuruste tüüp</option>
       <option v-for="size in sizes" :key="size.sizeTypeId" :value="size.sizeTypeId">{{ size.sizeTypeName }}</option>
@@ -9,7 +14,7 @@
 
 <script>
 export default {
-  name: 'SizesDropdown',
+  name: 'SizeTypesDropdown',
   props: {
     sizes: Array,
     selectedSizeTypeId: {
