@@ -30,7 +30,6 @@
 
 <script>
 import OrderService from "@/service/OrderService";
-import SessionStorageService from "@/service/SessionStorageService";
 
 export default {
   name: 'OrderListView',
@@ -38,7 +37,6 @@ export default {
     return {
       errorMessage: '',
       successMessage: '',
-      userId: sessionStorage.getItem("userId"),
 
       orders: [{
         orderId: 0,
@@ -54,15 +52,15 @@ export default {
   methods: {
     getOrdersBy(userId) {
       //this.resetErrorMessage()
-      OrderService.sendGetOrdersRequest(this.userId)
+      OrderService.sendGetOrdersRequest(userId)
           .then(response => this.orders = response.data)
           .catch(error => console.log(error))
     },
 
+
   },
   mounted() {
-    this.getOrdersBy(this.userId)
-
+    this.getOrdersBy()
   }
 }
 </script>
