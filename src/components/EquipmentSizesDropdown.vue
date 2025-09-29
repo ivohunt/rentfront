@@ -9,7 +9,8 @@
     <!--    36-->
     <select :value="selectedEquipmentSizeId" @change="handleEquipmentSizesDropdownChange" class="form-select">
       <option disabled :value="0">Vali suurus</option>
-      <option v-for="equipmentSize in equipmentSizes" :key="equipmentSize.equipmentSizeId" :value="equipmentSize.equipmentSizeId">
+      <option v-for="equipmentSize in equipmentSizes" :key="equipmentSize.equipmentSizeId"
+              :value="equipmentSize.equipmentSizeId">
         {{ equipmentSize.equipmentSizeName }}
       </option>
     </select>
@@ -17,6 +18,9 @@
 </template>
 
 <script>
+import EquipmentSizeService from "@/service/EquipmentSizeService";
+import NavigationService from "@/service/NavigationService";
+
 export default {
   name: 'EquipmentSizesDropdown',
   props: {
@@ -51,7 +55,10 @@ export default {
     },
 
     getEquipmentSizes(sizeTypeId) {
-      // too andmed ära, ja pane equipmentSizes massiivi
+      EquipmentSizeService.sendGetEquipmentSizesRequest(sizeTypeId)
+          .then(response => this.equipmentSizes = response.data)
+          .catch(() => NavigationService.navigateToErrorView())
+
     },
 
   }

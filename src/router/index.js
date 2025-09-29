@@ -13,6 +13,7 @@ import OrderAddView from "@/views/order/OrderAddView.vue";
 import OrderConfirmationView from "@/views/order/OrderConfirmationView.vue";
 import FAQView from "@/views/other views/FAQView.vue";
 import ContactView from "@/views/other views/ContactView.vue";
+import ItemAddView from "@/views/equipment/item/ItemAddView.vue";
 
 
 const routes = [
@@ -56,6 +57,13 @@ const routes = [
         name: 'equipmentRoute',
         component: EquipmentView
     },
+
+    {
+        path: '/add-item',
+        name: 'addItemRoute',
+        component: ItemAddView
+    },
+
 
     {
         path: '/item',
