@@ -95,3 +95,20 @@ table {
 .arrow.open {
     transform: rotate(180deg);
 }
+
+.col-4 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.buttons {
+    margin-top: 16px;
+    align-self: flex-end;
+    display: flex;
+    gap: 12px;
+}
+
+
+

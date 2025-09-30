@@ -15,6 +15,7 @@
         <th scope="col">Olek</th>
         <th scope="col">Muuda</th>
       </tr>
+
       </thead>
       <tbody>
       <tr v-for="order in orders" key="order.orderId">
@@ -24,7 +25,7 @@
         <td> {{order.totalPrice}}€</td>
         <td> {{ order.status }}</td>
         <td>
-          <font-awesome-icon @click="OrderEditView" class=" cursor-pointer mx-3"
+          <font-awesome-icon @click="navigateToOrderEditView(order.orderId)" class=" cursor-pointer mx-3"
                              icon="fa-sharp fa-pen-to-square"/>
         </td>
       </tr>
@@ -71,7 +72,7 @@ export default {
     },
 
     getOrders() {
-      OrderService.sendGetOrdersRequest(this.userId)
+      OrderService.sendGetAllOrdersRequest(this.userId)
           .then(response => this.orders = response.data)
           .catch(error => console.log(error))
     },

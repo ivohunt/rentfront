@@ -14,7 +14,7 @@ export default {
 
     },
 
-    sendGetOrdersRequest(userId) {
+    sendGetAllOrdersRequest(userId) {
         return axios.get('/all-orders', {
             params: {
                 userId: userId

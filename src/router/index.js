@@ -15,6 +15,7 @@ import FAQView from "@/views/other views/FAQView.vue";
 import ContactView from "@/views/other views/ContactView.vue";
 import ItemAddView from "@/views/equipment/item/ItemAddView.vue";
 import OrderAdminView from "@/views/order/OrderAdminView.vue";
+import OrderEditView from "@/views/order/OrderEditView.vue";
 
 
 const routes = [
@@ -80,8 +81,8 @@ const routes = [
 
     {
         path: '/order-edit',
-        name: 'orderAdminRoute',
-        component: OrderAdminView
+        name: 'orderEditRoute',
+        component: OrderEditView
     },
 
     {

@@ -13,8 +13,13 @@ export default {
         router.push({name: 'errorRoute'})
     },
 
-    navigateToOrderEditView() {
-        router.push({name: 'orderAdminRoute'})
+    navigateToOrderEditView(orderId) {
+        router.push({
+            name: 'orderEditRoute',
+            query: {
+                orderId: orderId
+            }
+        })
     },
 
 }
