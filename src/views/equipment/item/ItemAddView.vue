@@ -49,6 +49,13 @@ export default {
         }
       ],
 
+      equipmentSizes: [
+        {
+          equipmentSizeId: 0,
+          equipmentSizeName: ''
+        }
+      ]
+
     };
   },
   methods: {

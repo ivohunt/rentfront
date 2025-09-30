@@ -13,7 +13,7 @@
       |
       <router-link to="/price-edit"> Hinnad & kategooriad</router-link>
       |
-      <router-link to="/equipment"> Varustus</router-link>
+      <router-link to="/add-item"> Varustuse lisamine</router-link>
       |
     </template>
 
