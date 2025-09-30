@@ -11,6 +11,7 @@
         <th scope="col">Tellimuse nr</th>
         <th scope="col">Algus</th>
         <th scope="col">Lõpp</th>
+        <th scope="col">Hind</th>
         <th scope="col">Olek</th>
         <th scope="col">Muuda</th>
       </tr>
@@ -20,9 +21,11 @@
         <td> {{ order.orderNumber }}</td>
         <td> {{ order.start }}</td>
         <td> {{ order.end }}</td>
+        <td> {{order.totalPrice}}€</td>
         <td> {{ order.status }}</td>
         <td>
-          <font-awesome-icon @click="editOrder" class="mx-3" type="button" icon="fa-sharp fa-pen-to-square"/>
+          <font-awesome-icon @click="OrderEditView" class=" cursor-pointer mx-3"
+                             icon="fa-sharp fa-pen-to-square"/>
         </td>
       </tr>
       </tbody>
@@ -33,9 +36,17 @@
 <script>
 
 import OrderService from "@/service/OrderService";
+import OrderEditView from "@/views/order/OrderEditView.vue";
+import NavigationService from "@/service/NavigationService";
 
 export default {
   name: 'OrderAdminView',
+  computed: {
+    OrderEditView() {
+      return OrderEditView
+    }
+  },
+
   data() {
     return {
       userId: Number(sessionStorage.getItem('userId')),
@@ -48,12 +59,17 @@ export default {
           orderNumber: '',
           start: '',
           end: '',
+          totalPrice:'',
           status: ''
         }
       ]
     }
   },
   methods: {
+    navigateToOrderEditView(orderId){
+      NavigationService.navigateToOrderEditView(orderId)
+    },
+
     getOrders() {
       OrderService.sendGetOrdersRequest(this.userId)
           .then(response => this.orders = response.data)
