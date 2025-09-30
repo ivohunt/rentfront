@@ -55,7 +55,7 @@ export default {
     },
     getSizeTypes() {
       SizeTypeService.sendGetSizeTypesRequest()
-          .then(response => this.sizes = response.data)
+          .then(response => this.sizeTypes = response.data)
           .catch(() => NavigationService.navigateToErrorView())
     },
   },

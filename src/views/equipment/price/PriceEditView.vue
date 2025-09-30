@@ -47,7 +47,7 @@
 
       <div class="col">
         <div>
-          <SizesDropdown :sizes="sizes" :selectedSizeTypeId="category.sizeTypeId"
+          <SizesDropdown :sizeTypes="sizeTypes" :selectedSizeTypeId="category.sizeTypeId"
                          @event-new-sizetype-selected="setSizeType"/>
         </div>
       </div>
@@ -79,7 +79,7 @@ export default {
       successMessage: '',
       selectedSizeType: '',
 
-      sizes: [
+      sizeTypes: [
         {
           sizeTypeId: 0,
           sizeTypeName: ''
@@ -144,7 +144,7 @@ export default {
 
         getSizeTypes() {
           SizeTypeService.sendGetSizeTypesRequest()
-              .then(response => this.sizes = response.data)
+              .then(response => this.sizeTypes = response.data)
               .catch(() => NavigationService.navigateToErrorView())
         },
 

@@ -9,11 +9,11 @@
     <div class="row col-4 mx-auto">
       <CategoriesDropdown class="mb-3"
                           :categories="categories"
-                          :selectedCategoryId="item.categoryId"
-                          @event-new-category-selected="onCategorySelected"/>
+                          :selectedCategoryId="selectedCategoryId"
+                          @event-new-category-selected="setCategory"/>
 
-      <EquipmentSizesDropdown :selectedSizeTypeId="item.sizeTypeId"
-                              :selectedEquipmentSizeId="item.equipmentSizeId"
+      <EquipmentSizesDropdown :equipmentSizes="equipmentSizes"
+                              :selectedEquipmentSizeId="selectedEquipmentSizeId"
                               @event-new-equipment-size-selected="onEquipmentSizeSelected"
       />
     </div>
@@ -36,12 +36,19 @@ export default {
   components: {EquipmentSizesDropdown, CategoriesDropdown},
   data() {
     return {
-      categories: [],
-      item: {
-        categoryId: 0,
-        sizeTypeId: 0,
-        equipmentSizeId: 0,
-      }
+      selectedCategoryId: 0,
+      selectedEquipmentSizeId: 0,
+      selectedSizeTypeId:0,
+
+      categories: [
+        {
+          categoryId: 0,
+          categoryName: '',
+          price: 0,
+          sizeTypeId: 0,
+        }
+      ],
+
     };
   },
   methods: {
@@ -52,19 +59,23 @@ export default {
           .catch(() => NavigationService.navigateToErrorView())
     },
 
-    onCategorySelected(categoryId) {
-      const category = this.categories.find((c) => c.categoryId === categoryId);
-      if (category) {
-        this.item.categoryId = category.categoryId;
-        this.item.sizeTypeId = category.sizeTypeId;
-        this.item.equipmentSizeId = 0; // reset previous selection
+    setCategory(categoryId) {
+      this.selectedCategoryId = categoryId
+      const selectedCategory = this.categories.find(c => c.categoryId === categoryId);
+      if (selectedCategory) {
+        this.getEquipmentSizes(selectedCategory.sizeTypeId);
       }
     },
 
-
-    onEquipmentSizeSelected(equipmentSizeId) {
-      this.item.equipmentSizeId = equipmentSizeId;
+    getEquipmentSizes(sizeTypeId) {
+      EquipmentSizeService.sendGetEquipmentSizesRequest(sizeTypeId)
+          .then((response) => (this.equipmentSizes = response.data))
+          .catch((error) => console.error(error));
     },
+
+    onEquipmentSizeSelected(sizeId) {
+      this.selectedEquipmentSizeId = sizeId;
+    }
 
   },
 

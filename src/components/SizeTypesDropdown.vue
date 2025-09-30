@@ -8,7 +8,7 @@
 
     <select :value="selectedSizeTypeId" @change="handleSizeDropdownChange" class="form-select">
       <option disabled :value="0">Vali suuruste tüüp</option>
-      <option v-for="size in sizes" :key="size.sizeTypeId" :value="size.sizeTypeId">{{ size.sizeTypeName }}</option>
+      <option v-for="sizeType in sizeTypes" :key="sizeType.sizeTypeId" :value="sizeType.sizeTypeId">{{ sizeType.sizeTypeName }}</option>
     </select>
   </div>
 </template>
@@ -17,7 +17,7 @@
 export default {
   name: 'SizeTypesDropdown',
   props: {
-    sizes: Array,
+    sizeTypes: Array,
     selectedSizeTypeId: {
       type: Number,
       default: 'default'

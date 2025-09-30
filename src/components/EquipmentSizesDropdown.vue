@@ -9,8 +9,8 @@
     <!--    36-->
     <select :value="selectedEquipmentSizeId" @change="handleEquipmentSizesDropdownChange" class="form-select">
       <option disabled :value="0">Vali suurus</option>
-      <option v-for="equipmentSize in equipmentSizes" :key="equipmentSize.sizeTypeId"
-              :value="equipmentSize.sizeTypeId">
+      <option v-for="equipmentSize in equipmentSizes" :key="equipmentSize.equipmentSizeId"
+              :value="equipmentSize.equipmentSizeId">
         {{ equipmentSize.equipmentSizeName }}
       </option>
     </select>
@@ -20,7 +20,6 @@
 <script>
 
 import EquipmentSizeService from "@/service/EquipmentSizeService";
-import NavigationService from "@/service/NavigationService";
 
 export default {
   name: 'EquipmentSizesDropdown',
@@ -57,10 +56,12 @@ export default {
       this.$emit('event-new-equipment-size-selected', Number(event.target.value))
     },
 
-    loadEquipmentSizes(sizeTypeId){
+    loadEquipmentSizes(sizeTypeId) {
       EquipmentSizeService.sendGetEquipmentSizesRequest(sizeTypeId)
-          .then (response => this.equipmentSizes = response.data)
-          .catch (error => {console.error("Error fetching equipment sizes:", error)})
+          .then(response => this.equipmentSizes = response.data)
+          .catch(error => {
+            console.error("Error fetching equipment sizes:", error)
+          })
     },
 
   }
