@@ -33,7 +33,7 @@
 
 
     <div>
-      <div class="form-floating mt-5">
+      <div class="form-floating mt-5 mb-5">
         <button @click="handleAddItemResponse" type="submit" class="btn btn-primary">Lisa</button>
       </div>
     </div>
@@ -107,12 +107,12 @@ export default {
     },
 
     handleAddItemResponse() {
-      itemAddService.sendPostAddItem(this.selectedEquipmentSizeId)
+      itemAddService.sendPostAddItem(this.temp)
       this.successMessage = "Varustus lisatud"
     },
 
     setItemAddImageData(itemImageData) {
-      this.addable.itemImageData = itemImageData
+      this.temp.itemImageData = itemImageData
     },
   },
 
