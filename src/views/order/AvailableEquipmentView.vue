@@ -125,10 +125,23 @@ export default {
   methods: {
 
 
+    createOrder() {
+      console.log("createOrder called");
+
+      if (!this.newOrder.start || !this.newOrder.end) {
+        this.errorMessage = "Palun sisesta algus- ja lõppkuupäev";
+        return;
+      }
+
+      OrderService.createOrder(this.newOrder)
+          .then(response => this.handleCreateOrderResponse(response))
+          .catch(error => this.handleCreateOrderError(error));
+    },
+
     handleCreateOrderResponse(response) {
       // Axios response usually wraps data inside .data
       let orderId = response.data
-      // todo: kävita meetod, mis toob ära this.existingOrder andmed
+      // this.getExistingOrder(this.orderId)
       this.successMessage = 'Tellimus loodud';
       this.errorMessage = '';
       console.log("Order created:", response.data);
@@ -147,19 +160,6 @@ export default {
         this.errorMessage = 'Tellimuse loomisel tekkis viga';
       }
       this.successMessage = '';
-    },
-
-    createOrder() {
-      console.log("createOrder called");
-
-      if (!this.newOrder.start || !this.newOrder.end) {
-        this.errorMessage = "Palun sisesta algus- ja lõppkuupäev";
-        return;
-      }
-
-      OrderService.createOrder(this.newOrder)
-          .then(response => this.handleCreateOrderResponse(response))
-          .catch(error => this.handleCreateOrderError(error));
     },
 
     getAvailableCategories() {
@@ -234,7 +234,11 @@ export default {
             .then((response) => this.newOrder = response.data)
             .catch(() => NavigationService.navigateToAvailableEquipmentView())
     },
-
+    getExistingOrder() {
+      OrderService.getExistingOrder(orderId)
+          .then((response) => this.existingOrder = response.data)
+          .catch(() => this.errorMessage = "Ei leitud avatud tellimust")
+    },
 
   },
   mounted() {
@@ -243,6 +247,7 @@ export default {
 
     // todo
     if (this.hasOpenOrder) {
+      this.getExistingOrder(this.orderId)
       // too ära this.orderId järgi andmed this.existingOrder jaoks andmed (GET /midagi/midagi?orderId=x)
     }
   }

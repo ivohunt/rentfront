@@ -40,5 +40,13 @@ export default {
                 userId: userId
             }
         })
-    }
+    },
+
+    getExistingOrder(orderId) {
+        return axios.get('/order/existing', {
+            params: {
+                orderId: orderId
+            }
+        })
+    },
 }
