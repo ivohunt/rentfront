@@ -8,12 +8,10 @@
     </div>
     <div class="row col-4 mx-auto">
 
-      <ItemAddImage :image-data="addedImage"/>
-      <div>
-        <div class="row mt-5 mb-5 justify-content-center">
-          <input ref="fileInput" class="form-control" type="file" @change="handleImage" accept="image/png,image/jpeg,image/gif">
-        </div>
-      </div>
+
+      <ItemAddImg :image-data="temp"/>
+
+      <ImageInput @event-new-image-selected="setItemAddImageData"/>
 
       <CategoriesDropdown class="mb-3"
                           :categories="categories"
@@ -51,60 +49,41 @@ import EquipmentSizesDropdown from "@/components/EquipmentSizesDropdown.vue";
 import CategoryService from "@/service/CategoryService";
 import NavigationService from "@/service/NavigationService";
 import EquipmentSizeService from "@/service/EquipmentSizeService";
-import ItemAddImage from "@/views/equipment/item/ItemAddImage.vue";
 import itemAddService from "@/service/ItemAddService";
+import ImageInput from "@/components/image/ImageInput.vue";
+import ItemAddImg from "@/components/image/ItemAddImg.vue";
 
 export default {
   name: 'AddItemView',
 
-  components: {EquipmentSizesDropdown, CategoriesDropdown, ItemAddImage},
-  props: {
-    addedImage: Object
-  },
-
+  components: {ItemAddImg, ImageInput, EquipmentSizesDropdown, CategoriesDropdown},
   data() {
     return {
       selectedCategoryId: 0,
       selectedEquipmentSizeId: 0,
       selectedSizeTypeId:0,
 
-      categories: [
-        {
-          categoryId: 0,
-          categoryName: '',
-          price: 0,
-          sizeTypeId: 0,
-        }
-      ],
+      addable: [{
+        categories: [
+          {
+            categoryId: 0,
+            categoryName: '',
+            price: 0,
+            sizeTypeId: 0,
+          }
+        ],
 
-      equipmentSizes: [
-        {
-          equipmentSizeId: 0,
-          equipmentSizeName: ''
-        }
-      ]
+        equipmentSizes: [
+          {
+            equipmentSizeId: 0,
+            equipmentSizeName: ''
+          }
+        ],
+      }]
 
     };
   },
   methods: {
-
-    handleImage(event) {
-      const selectedImage = event.target.files[0];
-      this.emitBase64(selectedImage);
-    },
-
-    emitBase64(fileObject) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        let imageDataBase64 = reader.result;
-        this.$emit('event-new-image-selected', imageDataBase64)
-      };
-      reader.onerror = function (error) {
-        alert(error);
-      }
-      reader.readAsDataURL(fileObject);
-    },
-
     getCategories() {
       CategoryService.sendGetCategoriesRequest()
           .then(response => this.categories = response.data)
@@ -129,12 +108,16 @@ export default {
       this.selectedEquipmentSizeId = sizeId;
     },
 
-    handleAddItemResponse(categories, equipmentSizes) {
-      itemAddService.sendPostAddItem(categories, equipmentSizes)
+    handleAddItemResponse() {
+      itemAddService.sendPostAddItem(this.selectedEquipmentSizeId)
       this.successMessage = "Varustus lisatud"
-    }
+    },
 
+    setItemAddImageData(itemImageData) {
+      this.addable.itemImageData = itemImageData
+    },
   },
+
 
 
   mounted() {
