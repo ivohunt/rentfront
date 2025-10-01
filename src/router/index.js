@@ -5,15 +5,15 @@ import ErrorView from "@/views/ErrorView.vue";
 import RegistrationView from "@/views/user/RegistrationView.vue";
 import PriceEditView from "@/views/equipment/price/PriceEditView.vue";
 import PricesView from "@/views/equipment/price/PricesView.vue";
-import EquipmentView from "@/views/equipment/item/EquipmentView.vue";
 import ItemView from "@/views/equipment/item/ItemView.vue";
 import OrderAdminView from "@/views/order/OrderAdminView.vue";
 import OrderListView from "@/views/order/OrderListView.vue";
-import OrderAddView from "@/views/order/OrderAddView.vue";
+import AvailableEquipmentView from "@/views/order/AvailableEquipmentView.vue";
 import OrderConfirmationView from "@/views/order/OrderConfirmationView.vue";
 import FAQView from "@/views/other views/FAQView.vue";
 import ContactView from "@/views/other views/ContactView.vue";
 import ItemAddView from "@/views/equipment/item/ItemAddView.vue";
+import EquipmentView from "@/views/equipment/item/EquipmentView.vue";
 
 
 const routes = [
@@ -84,9 +84,9 @@ const routes = [
     },
 
     {
-        path: '/order',
-        name: 'orderAddRoute',
-        component: OrderAddView
+        path: '/available-equipment',
+        name: 'availableEquipmentRoute',
+        component: AvailableEquipmentView
     },
 
     {
@@ -106,6 +106,7 @@ const routes = [
         name: 'contactRoute',
         component: ContactView
     },
+
 
 ]
 

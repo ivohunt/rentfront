@@ -49,6 +49,8 @@ export default {
       loginResponse: {
         userId: 0,
         roleName: '',
+        userHasOpenOrder: false,
+        orderId: 0,
       },
 
       errorResponse: {
@@ -73,11 +75,23 @@ export default {
     },
 
     handleLoginRequestResponse(response) {
-      this.loginResponse = response.data
-      sessionStorage.setItem('userId', this.loginResponse.userId)
-      sessionStorage.setItem('roleName', this.loginResponse.roleName)
-      this.$emit('event-user-logged-in')
-      NavigationService.navigateToHomeView()
+      this.loginResponse = response.data;
+
+      // Save user info in session
+      sessionStorage.setItem("userId", this.loginResponse.userId);
+      sessionStorage.setItem("roleName", this.loginResponse.roleName);
+      sessionStorage.setItem("userHasOpenOrder", this.loginResponse.userHasOpenOrder);
+      sessionStorage.setItem("orderId", this.loginResponse.orderId);
+
+      // Emit and redirect
+      this.$emit("event-user-logged-in");
+
+      if (this.loginResponse.userHasOpenOrder) {
+        NavigationService.navigateToOrderConfirmationView(this.loginResponse.orderId)
+      } else {
+        NavigationService.navigateToAvailableEquipmentView()
+      }
+
     },
 
     handleFieldsIncorrectInputAlert() {

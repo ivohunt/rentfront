@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <div class="row"><h1>Koosta uus tellimus</h1>
+    <div class="row"><h1>Saadaval varustus</h1>
     </div>
 
     <div class="row mx-auto d-inline-flex justify-content-xxl-center mb-3">
@@ -9,18 +9,25 @@
       <AlertSad :message="errorMessage"/>
       <AlertGood :message="successMessage"/>
 
-      <div class="col-4">
-        <label for="startDate">Algus</label>
-        <input v-model="orderStart" id="startDate" class="form-control" type="date"/>
+      <div v-if="hasOpenOrder">
+        <div>Algus: {{ order.start }} Lõpp: {{ order.end }}</div>
       </div>
-      <div class="col-4">
-        <label for="endDate">Lõpp</label>
-        <input v-model="orderEnd" id="endDate" class="form-control" type="date"/>
+      <div v-else>
+        <div class="col-4">
+          <label for="startDate">Algus</label>
+          <input v-model="order.start" id="startDate" class="form-control" type="date"/>
+        </div>
+        <div class="col-4">
+          <label for="endDate">Lõpp</label>
+          <input v-model="order.end" id="endDate" class="form-control" type="date"/>
+        </div>
+
+        <div class="col-4">
+          <button @click="createOrder" type="submit" class="btn btn-primary">Vali kuupäevad</button>
+        </div>
+
       </div>
 
-      <div class="col-4">
-        <button @click="createOrder" type="submit" class="btn btn-primary">Lisa kuupäevad</button>
-      </div>
 
     </div>
 
@@ -83,22 +90,24 @@ import CategoryService from "@/service/CategoryService";
 import EquipmentSizeService from "@/service/EquipmentSizeService";
 import AlertSad from "@/components/alert/AlertSad.vue";
 import AlertGood from "@/components/alert/AlertGood.vue";
+import NavigationService from "@/service/NavigationService";
+import SessionStorageService from "@/service/SessionStorageService";
+import sessionStorageService from "@/service/SessionStorageService";
 
 export default {
-  name: 'OrderView',
+  name: 'AvailableEquipmentView',
   components: {AlertGood, AlertSad},
   data() {
     return {
+      hasOpenOrder: SessionStorageService.userHasOpenOrder(),
+      orderId: SessionStorageService.getOrderId(),
       order: {
-        orderId: null,
-        start: '',
-        end: '',
-        userId: sessionStorage.getItem('userId'),
-        status: '',
-        totalPrice: 0,
+        start: '2025-10-01',
+        end: '2025-10-02',
+        userId: sessionStorage.getItem('userId')
       },
-      orderStart:'',
-      orderEnd:'',
+      orderStart: '',
+      orderEnd: '',
       categories: [],
       selectedCategoryId: null,
       equipmentSizes: [],
@@ -118,17 +127,8 @@ export default {
         return;
       }
 
-      // Prepare payload for backend
-      const payload = {
-        start: this.orderStart,        // yyyy-MM-dd format
-        end: this.orderEnd,
-        userId: Number(sessionStorage.getItem('userId')), // ensure it's a number
-      };
-
-      console.log("Payload sent to backend:", payload);
-
       // Send request
-      OrderService.createOrder(payload)
+      OrderService.createOrder(this.order)
           .then(response => {
             // Axios response usually wraps data inside .data
             this.order.orderId = response.data.orderId;
@@ -216,11 +216,19 @@ export default {
           });
     },
 
+    getOpenOrder() {
+      if (sessionStorageService.userHasOpenOrder())
+        OrderService.getOpenOrder(orderId)
+            .then((response) => this.order = response.data)
+            .catch(() => NavigationService.navigateToAvailableEquipmentView())
+  },
 
 
-    mounted() {
-      this.getCategories();
-    }
-  }
+}
+,
+mounted()
+{
+  this.getOpenOrder()
+}
 }
 </script>

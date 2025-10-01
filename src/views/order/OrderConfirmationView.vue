@@ -3,10 +3,14 @@
 </template>
 
 <script>
+import {useRoute} from "vue-router";
+
 export default {
   name: 'ConfirmOrderView',
   data() {
-    return {}
+    return {
+      orderId: Number(useRoute().query.orderId)
+    }
   },
   methods: {},
   mounted() {
