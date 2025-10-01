@@ -10,20 +10,20 @@
       <AlertGood :message="successMessage"/>
 
       <div v-if="hasOpenOrder">
-        <div>Algus: {{ order.start }} Lõpp: {{ order.end }}</div>
+        <div>Algus: {{ newOrder.start }} Lõpp: {{ newOrder.end }}</div>
       </div>
-      <div v-else>
+      <div v-else class="row">
         <div class="col-4">
           <label for="startDate">Algus</label>
-          <input v-model="order.start" id="startDate" class="form-control" type="date"/>
+          <input v-model="newOrder.start" id="startDate" class="form-control" type="date"/>
         </div>
         <div class="col-4">
           <label for="endDate">Lõpp</label>
-          <input v-model="order.end" id="endDate" class="form-control" type="date"/>
+          <input v-model="newOrder.end" id="endDate" class="form-control" type="date"/>
         </div>
 
         <div class="col-4">
-          <button @click="createOrder" type="submit" class="btn btn-primary">Vali kuupäevad</button>
+          <button @click="createOrder" type="button" class="btn btn-primary">Vali kuupäevad</button>
         </div>
 
       </div>
@@ -97,17 +97,22 @@ import sessionStorageService from "@/service/SessionStorageService";
 export default {
   name: 'AvailableEquipmentView',
   components: {AlertGood, AlertSad},
+
   data() {
     return {
-      hasOpenOrder: SessionStorageService.userHasOpenOrder(),
-      orderId: SessionStorageService.getOrderId(),
-      order: {
-        start: '2025-10-01',
-        end: '2025-10-02',
+      hasOpenOrder: false,
+      orderId: 0,
+      newOrder: {
+        start: '',
+        end: '',
         userId: sessionStorage.getItem('userId')
       },
-      orderStart: '',
-      orderEnd: '',
+      existingOrder: {
+        start: '',
+        end: '',
+        userId: sessionStorage.getItem('userId')
+      },
+
       categories: [],
       selectedCategoryId: null,
       equipmentSizes: [],
@@ -119,44 +124,51 @@ export default {
   },
   methods: {
 
+
+    handleCreateOrderResponse(response) {
+      // Axios response usually wraps data inside .data
+      let orderId = response.data
+      // todo: kävita meetod, mis toob ära this.existingOrder andmed
+      this.successMessage = 'Tellimus loodud';
+      this.errorMessage = '';
+      console.log("Order created:", response.data);
+      this.hasOpenOrder = true
+      sessionStorage.setItem('orderId', orderId)
+      sessionStorage.setItem('userHasOpenOrder', this.hasOpenOrder)
+      // Fetch available categories for step 2
+      this.getAvailableCategories();
+    },
+
+    handleCreateOrderError(error) {
+      console.error("Error creating order:", error);
+      if (error.response && error.response.data && error.response.data.message) {
+        this.errorMessage = error.response.data.message;
+      } else {
+        this.errorMessage = 'Tellimuse loomisel tekkis viga';
+      }
+      this.successMessage = '';
+    },
+
     createOrder() {
       console.log("createOrder called");
 
-      if (!this.orderStart || !this.orderEnd) {
+      if (!this.newOrder.start || !this.newOrder.end) {
         this.errorMessage = "Palun sisesta algus- ja lõppkuupäev";
         return;
       }
 
-      // Send request
-      OrderService.createOrder(this.order)
-          .then(response => {
-            // Axios response usually wraps data inside .data
-            this.order.orderId = response.data.orderId;
-            this.successMessage = 'Tellimus loodud';
-            this.errorMessage = '';
-            console.log("Order created:", response.data);
-
-            // Fetch available categories for step 2
-            this.getAvailableCategories();
-          })
-          .catch(error => {
-            console.error("Error creating order:", error);
-            if (error.response && error.response.data && error.response.data.message) {
-              this.errorMessage = error.response.data.message;
-            } else {
-              this.errorMessage = 'Tellimuse loomisel tekkis viga';
-            }
-            this.successMessage = '';
-          });
+      OrderService.createOrder(this.newOrder)
+          .then(response => this.handleCreateOrderResponse(response))
+          .catch(error => this.handleCreateOrderError(error));
     },
 
     getAvailableCategories() {
-      if (!this.orderStart || !this.orderEnd) {
+      if (!this.newOrder.start || !this.newOrder.end) {
         this.errorMessage = "Palun vali algus- ja lõppkuupäev";
         return;
       }
 
-      CategoryService.getAvailableCategories(this.orderStart, this.orderEnd)
+      CategoryService.getAvailableCategories(this.newOrder.start, this.newOrder.end)
           .then(response => {
             this.categories = response.data;
             this.errorMessage = '';
@@ -182,13 +194,13 @@ export default {
     },
 
     addItemToOrder(item) {
-      if (!this.order.orderId) {
+      if (!this.newOrder.orderId) {
         this.errorMessage = "Order not created yet!";
         return;
       }
 
       const orderItemDto = {
-        orderId: this.order.orderId,
+        orderId: this.newOrder.orderId,
         itemId: item.itemId,
         price: item.price || 0, // or fetch price from category/item
       };
@@ -207,7 +219,7 @@ export default {
     },
 
     finalizeOrder() {
-      OrderService.finalizeOrder(this.order.orderId)
+      OrderService.finalizeOrder(this.newOrder.orderId)
           .then(() => {
             this.successMessage = "Order finalized!";
           })
@@ -219,16 +231,20 @@ export default {
     getOpenOrder() {
       if (sessionStorageService.userHasOpenOrder())
         OrderService.getOpenOrder(orderId)
-            .then((response) => this.order = response.data)
+            .then((response) => this.newOrder = response.data)
             .catch(() => NavigationService.navigateToAvailableEquipmentView())
+    },
+
+
   },
+  mounted() {
+    this.hasOpenOrder = SessionStorageService.userHasOpenOrder()
+    this.orderId = SessionStorageService.getOrderId()
 
-
-}
-,
-mounted()
-{
-
-}
+    // todo
+    if (this.hasOpenOrder) {
+      // too ära this.orderId järgi andmed this.existingOrder jaoks andmed (GET /midagi/midagi?orderId=x)
+    }
+  }
 }
 </script>

@@ -71,7 +71,6 @@ export default {
       } else {
         this.handleFieldsIncorrectInputAlert()
       }
-
     },
 
     handleLoginRequestResponse(response) {

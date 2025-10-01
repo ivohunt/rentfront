@@ -18,6 +18,9 @@
       <template v-if="userHasOpenOrder">
         <font-awesome-icon @click="navigateToOrderConfirmationView" class="cursor-pointer me-3" icon="fa-solid fa-cart-shopping" />
       </template>
+      <template>
+
+      </template>
     </template>
 
     <template v-if="!isLoggedIn">
@@ -27,6 +30,9 @@
     </template>
 
     <template v-if="isLoggedIn">
+      <div>
+        Sisse logitud userId: {{ userId }}
+      </div>
       <font-awesome-icon @click="startLogout" type="button" icon="fa-solid fa-right-from-bracket"/>
     </template>
 
@@ -54,7 +60,8 @@ export default {
       isCustomer: false,
       userHasOpenOrder: false,
       orderId: 0,
-      modalIsOpen: false
+      modalIsOpen: false,
+      userId: '',
     }
   },
   methods: {
@@ -65,6 +72,7 @@ export default {
       this.isCustomer = SessionStorageService.isCustomer()
       this.userHasOpenOrder = SessionStorageService.userHasOpenOrder()
       this.orderId = SessionStorageService.getOrderId()
+      this.userId = SessionStorageService.getNavbarUserId()
     },
 
 

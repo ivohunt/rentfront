@@ -10,7 +10,8 @@ export default {
     },
 
     navigateToErrorView() {
-        router.push({name: 'errorRoute'})
+        // todo ülives sisse kommentterida
+        // router.push({name: 'errorRoute'})
     },
 
     navigateToAvailableEquipmentView() {
