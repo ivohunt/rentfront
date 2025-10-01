@@ -63,7 +63,7 @@ export default {
       selectedEquipmentSizeId: 0,
       selectedSizeTypeId:0,
 
-      addable: [{
+
         categories: [
           {
             categoryId: 0,
@@ -79,8 +79,6 @@ export default {
             equipmentSizeName: ''
           }
         ],
-      }]
-
     };
   },
   methods: {
