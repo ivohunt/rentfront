@@ -15,10 +15,19 @@ export default {
     },
 
     sendGetAllOrdersRequest(userId) {
-        return axios.get('/all-orders', {
+        return axios.get('/orders/all', {
             params: {
                 userId: userId
             }
         })
+    },
+
+    getOrderById(orderId) {
+        return axios.get(`/order/customer/${orderId}`);
+    },
+
+    getOrderItems(orderId) {
+        return axios.get(`/order-items/${orderId}`);
     }
+
 }

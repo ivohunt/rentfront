@@ -74,13 +74,13 @@ const routes = [
     },
 
     {
-        path: '/all-orders',
+        path: '/orders/all',
         name: 'ordersAdminRoute',
         component: OrdersAdminView
     },
 
     {
-        path: '/order-edit',
+        path: '/order/customer',
         name: 'orderEditRoute',
         component: OrderEditView
     },

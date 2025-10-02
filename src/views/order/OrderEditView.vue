@@ -11,8 +11,8 @@
     <table class="table w-10 col col-4">
       <thead>
       <tr>
-        <th>Tellimuse nr</th>
-        <td> {{ order.orderId }}</td>
+        <th>Tellimuse number</th>
+        <td>{{ order.orderNumber }}</td>
       </tr>
       <tr>
         <th>Algus</th>
@@ -23,36 +23,48 @@
         <td>{{ order.end }}</td>
       </tr>
       <tr>
-        <th>Kliendinimi</th>
-        <td>{{ order.customerName }}</td>
+        <th>Eesnimi</th>
+        <td>{{ order.userFirstName }}</td>
+      </tr>
+      <tr>
+        <th>Perekonnanimi</th>
+        <td>{{ order.userLastName }}</td>
       </tr>
       <tr>
         <th>Kliendi email</th>
-        <td>{{ order.customerEmail }}</td>
+        <td>{{ order.userEmail }}</td>
       </tr>
       <tr>
         <th>Kliendi telefon</th>
-        <td>{{ order.customerPhone }}</td>
+        <td>{{ order.userPhone }}</td>
+      </tr>
+      <tr>
+        <th>Staatus</th>
+        <td>{{ order.status}}</td>
       </tr>
       <tr>
         <th>Lisatud varustus</th>
-        <td>{{ order.addedEquipment }}</td>
+        <td>
+        <div v-for="orderItem in orderItems">
+          <p>item id: {{orderItem.itemId}}</p>
+          <p>category id: {{orderItem.categoryId}}</p>
+          <p>equipmentSize id: {{orderItem.equipmentSizeId}}</p>
+        </div>
+        </td>
       </tr>
       </thead>
     </table>
 
     <div>
       <div>
-        <button class="btn btn-primary" type="submit">Kinnita tellimus</button>
+        <button class="btn btn-outline-primary" type="submit">Kinnita tellimus</button>
       </div>
       <div>
-        <button class="btn btn-primary gap:6px" type="submit">Prindi PDF</button>
+        <button class="btn btn-outline-primary " type="submit">Aktiveeri tellimus</button>
+        <button class="btn btn-outline-primary" type="submit">Prindi PDF</button>
       </div>
       <div>
-        <button class="btn btn-primary " type="submit">Aktiveeri tellimus</button>
-      </div>
-      <div>
-        <button class="btn btn-primary" type="submit">Lõpeta tellimus</button>
+        <button class="btn btn-outline-primary" type="submit">Lõpeta tellimus</button>
       </div>
     </div>
   </div>
@@ -60,32 +72,75 @@
 </template>
 
 <script>
+import OrderService from "@/service/OrderService";
+
 export default {
   name: 'OrderEditView',
   data() {
     return {
+
 
       userId: Number(sessionStorage.getItem('userId')),
       errorMessage: '',
       successMessage: '',
 
       order: {
-        orderId: '',
         orderNumber: '',
         start: '',
         end: '',
-        customerName: '',
-        customerEmail: '',
-        customerPhone: '',
-        addedEquipment: '',
+        status: '',
+        userFirstName: '',
+        userLastName: '',
+        userPhone: '',
+        userEmail: '',
       },
+      orderItems: [{
+        itemId: '',
+        categoryId: '',
+        equipmentSizeId:'',
+
+      }],
+
     }
   },
-  methods: {},
-  mounted() {
+  methods: {
+
+    getOrderById() {
+      const orderId = this.$route.query.orderId;
+      console.log(orderId)
+
+      OrderService.getOrderById(orderId)
+          .then(response => {
+            console.log(response.data);
+            this.order = response.data
+          })
+          .catch(error => {
+            console.log(error);
+            this.errorMessage = 'Tellimuse andmete laadimine ebaõnnestus';
+          });
+    },
+
+    getOrderItems() {
+      console.log('getting orderitems')
+      const orderId = this.$route.query.orderId;
+
+      OrderService.getOrderItems(orderId)
+          .then(response => {
+            console.log('orderitems data in then');
+            console.log(response.data);
+            this.orderItems = response.data;
+          })
+          .catch(error => {
+            console.log('orderitems get error');
+            console.log(error);
+            this.errorMessage = 'Tellimuse andmete laadimine ebaõnnestus';
+          });
+    }
+  },
+  mounted(){
+    this.getOrderById();
+    this.getOrderItems();
+
   }
 }
 </script>
-
-
-
