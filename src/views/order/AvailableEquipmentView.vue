@@ -216,18 +216,6 @@ export default {
           });
     },
 
-    onCategorySelected(availableItems) {
-      this.availableItems = availableItems
-      // // Call service to get equipment sizes/items for this category
-      // EquipmentSizeService.getAvailableItems(categoryId)
-      //     .then(response => {
-      //       this.equipmentSizes = response.data;
-      //     })
-      //     .catch(err => {
-      //       console.error("Error loading equipment sizes:", err);
-      //       this.errorMessage = "Ei saanud suurusi laadida";
-      //     });
-    },
 
     addItemToOrder(item) {
       if (!this.newOrder.orderId) {
