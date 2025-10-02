@@ -72,7 +72,7 @@ const routes = [
     },
 
     {
-        path: '/all-orders',
+        path: '/orders/admin',
         name: 'orderAdminRoute',
         component: OrderAdminView
     },

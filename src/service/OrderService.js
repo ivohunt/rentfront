@@ -49,4 +49,21 @@ export default {
             }
         })
     },
+
+
+    sendGetCustomerOrdersRequest(orderId) {
+        return axios.get('/order/customer', {
+            params: {
+                orderId: orderId
+            }
+        });
+    },
+
+    getOrderItems(orderId) {
+        return axios.get('/order-items',{
+            params: {
+                orderId: orderId
+            }
+        });
+    }
 }

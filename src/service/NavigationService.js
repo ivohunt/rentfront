@@ -30,4 +30,14 @@ export default {
             }
         })
     },
+
+    navigateToOrderEditView(orderId) {
+        router.push({
+            name: 'orderEditRoute',
+            query: {
+                orderId: orderId
+            }
+        })
+    },
+
 }
