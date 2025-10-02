@@ -7,7 +7,7 @@
     <router-link to="/">Avaleht</router-link> |
 
     <template v-if="isAdmin">
-      <router-link to="/orders/admin">Tellimused</router-link>
+      <router-link to="/orders/admin">Tellimused</router-link> |
       <router-link to="/price-edit">Hinnad & kategooriad</router-link> |
       <router-link to="/add-item">Varustuse lisamine</router-link> |
     </template>
