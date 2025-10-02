@@ -8,8 +8,8 @@
       </div>
     </div>
     <div class="row justify-content-center mb-5">
-      <div class="col col-4">
-        <table class="table table-dark table-hover">
+      <div class="col col-5">
+        <table class="table table-hover">
           <thead>
           <tr>
             <th>Tellimuse number</th>
@@ -48,9 +48,9 @@
       </div>
     </div>
     <div class="row justify-content-center mb-5">
-      <div class="col col-4">
+      <div class="col col-5">
         <h2>Tellitud varustus</h2>
-        <table class="table table-hover table-dark">
+        <table class="table table-hover">
           <thead>
           <tr>
             <th scope="col">Varustuse tüüp</th>
@@ -72,14 +72,20 @@
 
     <div>
       <div>
-        <button v-if="orderIsUnconfirmed" @click="updateStatusToConfirmed" class="btn btn-outline-primary" type="submit">Kinnita tellimus</button>
+        <button v-if="orderIsUnconfirmed" @click="updateStatusToConfirmed" class="btn btn-outline-primary"
+                type="submit">Kinnita tellimus
+        </button>
       </div>
       <div>
-        <button class="btn btn-outline-primary " type="submit">Aktiveeri tellimus</button>
+        <button v-if="orderIsConfirmed" @click="updateStatusToActivate" class="btn btn-outline-primary " type="submit">
+          Aktiveeri tellimus
+        </button>
         <button class="btn btn-outline-primary" type="submit">Prindi PDF</button>
       </div>
       <div>
-        <button class="btn btn-outline-primary" type="submit">Lõpeta tellimus</button>
+        <button v-if="orderIsActivated" @click="updateStatusToFinished" class="btn btn-outline-primary" type="submit">
+          Lõpeta tellimus
+        </button>
       </div>
     </div>
   </div>
@@ -161,8 +167,33 @@ export default {
           .catch(() => NavigationService.navigateToErrorView())
     },
 
+    updateStatusToActivate() {
+      OrderService.sendPatchOrderRequest(this.orderId, "Aktiveeritud")
+          .then(() => this.handleUpdateStatusToActivatedResponse())
+          .catch(() => NavigationService.navigateToErrorView())
+    },
+
+    updateStatusToFinished() {
+      OrderService.sendPatchOrderRequest(this.orderId, "Lõpetatud")
+          .then(() => this.handleUpdateStatusToFinishedResponse())
+          .catch(() => NavigationService.navigateToErrorView())
+    },
+
     handleUpdateStatusToConfirmedResponse() {
-      // todo, mingi alert
+      this.successMessage = "Tellimus kinnitatud"
+      setTimeout(this.resetAllMessages, 3000)
+      this.getOrderInfo()
+    },
+
+    handleUpdateStatusToActivatedResponse() {
+      this.successMessage = "Tellimus aktiveeritud"
+      setTimeout(this.resetAllMessages, 3000)
+      this.getOrderInfo()
+    },
+
+    handleUpdateStatusToFinishedResponse() {
+      this.successMessage = "Tellimus lõpetatud"
+      setTimeout(this.resetAllMessages, 3000)
       this.getOrderInfo()
     },
 
@@ -170,7 +201,6 @@ export default {
       this.errorMessage = ''
       this.successMessage = ''
     },
-
 
   },
   mounted() {
