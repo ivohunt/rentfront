@@ -3,7 +3,7 @@ import {start} from "@popperjs/core";
 
 export default {
 
-    getAvailableItems(sizeTypeId) {
+    sendGetEquipmentSizesRequest(sizeTypeId) {
         return axios.get('/equipment-sizes', {
             params: {
                 sizeTypeId: sizeTypeId
