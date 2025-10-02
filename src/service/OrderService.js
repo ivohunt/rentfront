@@ -11,6 +11,17 @@ export default {
         })
     },
 
+    sendPostAddItemToOrderRequest(orderId, itemId) {
+        return axios.post ('/order-items',null,{
+            params:{
+                orderId:orderId,
+                itemId:itemId
+            }
+        })
+
+
+    },
+
     sendGetAllOrdersRequest(status) {
         return axios.get('/orders/all', {
             params: {

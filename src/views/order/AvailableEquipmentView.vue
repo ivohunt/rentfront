@@ -10,15 +10,15 @@
       <AlertGood :message="successMessage"/>
 
       <div v-if="hasOpenOrder">
-        <div>Algus: {{ existingOrder.start }} Lõpp: {{ existingOrder.end }}</div>
+        <div>Laenutuse algus: {{ existingOrder.start }} <br> Laenutuse lõpp: {{ existingOrder.end }}</div>
       </div>
       <div v-else class="row">
         <div class="col-4">
-          <label for="startDate">Algus</label>
+          <label for="startDate">Laenutuse algus</label>
           <input v-model="newOrder.start" id="startDate" class="form-control" type="date"/>
         </div>
         <div class="col-4">
-          <label for="endDate">Lõpp</label>
+          <label for="endDate">Laenutuse lõpp</label>
           <input v-model="newOrder.end" id="endDate" class="form-control" type="date"/>
         </div>
 
@@ -33,32 +33,35 @@
 
     <div>
       <div>
-        <h3>Available Categories</h3>
+        <h3>Varustuse kategooriad</h3>
         <div class="categories">
           <button
               v-for="category in categories"
               :key="category.categoryId"
               @click="onCategorySelected(category.availableItems)"
-              class="btn btn-outline-primary m-1"
+              class="btn btn-outline-primary btn-lg m-1"
           >
             {{ category.categoryName }}
           </button>
         </div>
 
-        <table v-if="availableItems.length > 0" class="table">
+        <table v-if="availableItems.length > 0" class="table table-hover w-25 mx-auto">
           <thead>
           <tr>
-            <th scope="col">Kirjeldus</th>
+            <th scope="col">Suurus</th>
           </tr>
           </thead>
+
           <tbody>
-          <tr v-for="availableItem in availableItems" >
-            <td>
-              <button @click="addToOrder(availableItem.itemId)">{{availableItem.notes}}</button></td>
+          <tr v-for="availableItem in availableItems">
+            <td class="col-5">
+              <button class="btn btn-outline-primary btn-lg" @click="addToOrder(availableItem.itemId)">
+                {{ availableItem.equipmentSizeName }}
+              </button>
+            </td>
           </tr>
           </tbody>
         </table>
-
 
 
         <div v-if="equipmentSizes.length">
@@ -97,7 +100,6 @@
 <script>
 import OrderService from "@/service/OrderService";
 import CategoryService from "@/service/CategoryService";
-import EquipmentSizeService from "@/service/EquipmentSizeService";
 import AlertSad from "@/components/alert/AlertSad.vue";
 import AlertGood from "@/components/alert/AlertGood.vue";
 import NavigationService from "@/service/NavigationService";
@@ -139,7 +141,8 @@ export default {
               itemId: 0,
               status: '',
               notes: '',
-              equipmentSizeId: 0
+              equipmentSizeId: 0,
+              equipmentSizeName: ''
             }
           ]
         }
@@ -155,18 +158,20 @@ export default {
   methods: {
 
     addToOrder(itemId) {
-      alert(itemId)
+      OrderService.sendPostAddItemToOrderRequest(this.orderId, itemId)
+          .then(()=> this.successMessage = "Ühik lisatud tellimusele " + this.existingOrder.orderNumber)
+          .catch(() => NavigationService.navigateToErrorView())
+
+
       // todo: POST /item?orderId=this.orderId&itemId=itemId
       // peale happy responset käivitada:
-      // this.getAvailableCategories(this.existingOrder.start, this.existingOrder.end)
+      this.getAvailableCategories(this.existingOrder.start, this.existingOrder.end)
       this.availableItems = []
 
     },
 
 
     createOrder() {
-      console.log("createOrder called");
-
       if (!this.newOrder.start || !this.newOrder.end) {
         this.errorMessage = "Palun sisesta algus- ja lõppkuupäev";
         return;
@@ -175,6 +180,7 @@ export default {
       OrderService.sendPostOrderRequest(this.newOrder)
           .then(response => this.handleCreateOrderResponse(response))
           .catch(error => this.handleCreateOrderError(error));
+      this.getAvailableCategories()
     },
 
     handleCreateOrderResponse(response) {
@@ -214,7 +220,7 @@ export default {
     },
 
     onCategorySelected(availableItems) {
-      this.availableItems =  availableItems
+      this.availableItems = availableItems
       // // Call service to get equipment sizes/items for this category
       // EquipmentSizeService.getAvailableItems(categoryId)
       //     .then(response => {
