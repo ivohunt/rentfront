@@ -49,7 +49,7 @@
     </div>
     <div class="row justify-content-center mb-5">
       <div class="col col-4">
-          <h2>Tellitud varustus</h2>
+        <h2>Tellitud varustus</h2>
         <table class="table table-hover table-dark">
           <thead>
           <tr>
@@ -59,10 +59,10 @@
           </tr>
           </thead>
           <tbody>
-          <tr>
-            <td>?</td>
-            <td>?</td>
-            <td>?</td>
+          <tr v-for="orderItem in orderItems" :key="orderItem.orderItemId">
+            <td>{{ orderItem.categoryName }}</td>
+            <td>{{ orderItem.equipmentSize }}</td>
+            <td>{{ orderItem.price }}</td>
           </tr>
           </tbody>
         </table>
@@ -70,10 +70,9 @@
     </div>
 
 
-
     <div>
       <div>
-        <button class="btn btn-outline-primary" type="submit">Kinnita tellimus</button>
+        <button v-if="orderIsUnconfirmed" @click="updateStatusToConfirmed" class="btn btn-outline-primary" type="submit">Kinnita tellimus</button>
       </div>
       <div>
         <button class="btn btn-outline-primary " type="submit">Aktiveeri tellimus</button>
@@ -91,16 +90,23 @@
 import OrderService from "@/service/OrderService";
 import {useRoute} from "vue-router";
 import AlertSad from "@/components/alert/AlertSad.vue";
+import NavigationService from "@/service/NavigationService";
 
 export default {
   name: 'OrderEditView',
   components: {AlertSad},
   data() {
     return {
-      orderId:  Number(useRoute().query.orderId),
+      orderId: Number(useRoute().query.orderId),
       userId: Number(sessionStorage.getItem('userId')),
       errorMessage: '',
       successMessage: '',
+
+      orderIsUnconfirmed: false,
+      orderIsConfirmed: false,
+      orderIsActivated: false,
+      orderIsFinished: false,
+
 
       orderInfo: {
         orderNumber: '',
@@ -114,6 +120,7 @@ export default {
       },
       orderItems: [
         {
+          orderItemId: 0,
           categoryName: '',
           equipmentSize: '',
           price: 0
@@ -127,8 +134,16 @@ export default {
     getOrderInfo() {
 
       OrderService.sendGetCustomerOrdersRequest(this.orderId)
-          .then(response => this.orderInfo = response.data)
+          .then(response => this.handleGetOrderInfoResponse(response))
           .catch(() => this.errorMessage = 'Tellimuse andmete laadimine ebaõnnestus');
+    },
+
+    handleGetOrderInfoResponse(response) {
+      this.orderInfo = response.data
+      this.orderIsUnconfirmed = this.orderInfo.status === 'Kinnitamata'
+      this.orderIsConfirmed = this.orderInfo.status === 'Kinnitatud'
+      this.orderIsActivated = this.orderInfo.status === 'Aktiivne'
+      this.orderIsFinished = this.orderInfo.status === 'Lõpetatud'
     },
 
     getOrderItems() {
@@ -136,16 +151,19 @@ export default {
       const orderId = this.$route.query.orderId;
 
       OrderService.getOrderItems(orderId)
-          .then(response => {
-            console.log('orderitems data in then');
-            console.log(response.data);
-            this.orderItems = response.data;
-          })
-          .catch(error => {
-            console.log('orderitems get error');
-            console.log(error);
-            this.errorMessage = 'Tellimuse andmete laadimine ebaõnnestus';
-          });
+          .then(response => this.orderItems = response.data)
+          .catch(() => this.errorMessage = 'Tellimuse andmete laadimine ebaõnnestus');
+    },
+
+    updateStatusToConfirmed() {
+      OrderService.sendPatchOrderRequest(this.orderId, "Kinnitatud")
+          .then(() => this.handleUpdateStatusToConfirmedResponse())
+          .catch(() => NavigationService.navigateToErrorView())
+    },
+
+    handleUpdateStatusToConfirmedResponse() {
+      // todo, mingi alert
+      this.getOrderInfo()
     },
 
     resetAllMessages() {
@@ -155,7 +173,7 @@ export default {
 
 
   },
-  mounted(){
+  mounted() {
     this.getOrderInfo();
     this.getOrderItems();
 

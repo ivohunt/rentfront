@@ -2,8 +2,21 @@ import axios from "axios";
 
 export default {
 
-    sendGetAllOrdersRequest() {
-        return axios.get('/orders/all');
+    sendPatchOrderRequest(orderId, status) {
+        return axios.patch('/order', {
+            params: {
+                orderId: orderId,
+                status: status
+            }
+        })
+    },
+
+    sendGetAllOrdersRequest(status) {
+        return axios.get('/orders/all', {
+            params: {
+                status: status
+            }
+        });
     },
 
     sendPostOrderRequest(order) {
@@ -59,7 +72,7 @@ export default {
     },
 
     getOrderItems(orderId) {
-        return axios.get('/order-items',{
+        return axios.get('/order-items', {
             params: {
                 orderId: orderId
             }

@@ -1,52 +1,27 @@
 <template>
   <div class="container text-center">
-    <div class="row">
-      <div class="col">
-        <h2>Tellimuste haldamine</h2>
-      </div>
-    </div>
-    <table class="table w-40 mx-auto table-hover">
-      <thead>
-      <tr>
-        <th scope="col">Tellimuse nr</th>
-        <th scope="col">Algus</th>
-        <th scope="col">Lõpp</th>
-        <th scope="col">Hind</th>
-        <th scope="col">Olek</th>
-        <th scope="col">Muuda</th>
-      </tr>
+    <div class="row justify-content-center">
+      <div class="col col-7">
+        <h2>Kinnitamata tellimused</h2>
+        <OrdersTable :orders="unconfirmedOrders"/>
 
-      </thead>
-      <tbody>
-      <tr v-for="order in orders" key="order.orderId">
-        <td> {{ order.orderNumber }}</td>
-        <td> {{ order.start }}</td>
-        <td> {{ order.end }}</td>
-        <td> {{order.totalPrice}}€</td>
-        <td> {{ order.status }}</td>
-        <td>
-          <font-awesome-icon @click="navigateToOrderEditView(order.orderId)" class=" cursor-pointer mx-3"
-                             icon="fa-sharp fa-pen-to-square"/>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+        <h2>Kinnitatud tellimused</h2>
+        <OrdersTable :orders="confirmedOrders"/>
+      </div>
+
+    </div>
+
   </div>
 </template>
 
 <script>
 
 import OrderService from "@/service/OrderService";
-import OrderEditView from "@/views/order/OrderEditView.vue";
-import NavigationService from "@/service/NavigationService";
+import OrdersTable from "@/components/OrdersTable.vue";
 
 export default {
   name: 'OrderAdminView',
-  computed: {
-    OrderEditView() {
-      return OrderEditView
-    }
-  },
+  components: {OrdersTable},
 
   data() {
     return {
@@ -54,27 +29,67 @@ export default {
       errorMessage: '',
       successMessage: '',
 
-      orders: [
+      unconfirmedOrders: [
         {
           orderId: 0,
           orderNumber: '',
           start: '',
           end: '',
-          totalPrice:'',
+          totalPrice: '',
           status: ''
         }
-      ]
+      ],
+      confirmedOrders: [
+        {
+          orderId: 0,
+          orderNumber: '',
+          start: '',
+          end: '',
+          totalPrice: '',
+          status: ''
+        }
+      ],
+      activeOrders: [
+        {
+          orderId: 0,
+          orderNumber: '',
+          start: '',
+          end: '',
+          totalPrice: '',
+          status: ''
+        }
+      ],
+      finishedOrders: [
+        {
+          orderId: 0,
+          orderNumber: '',
+          start: '',
+          end: '',
+          totalPrice: '',
+          status: ''
+        }
+      ],
 
     }
   },
   methods: {
-    navigateToOrderEditView(orderId){
-      NavigationService.navigateToOrderEditView(orderId)
-    },
+
 
     getOrders() {
-      OrderService.sendGetAllOrdersRequest()
-          .then(response => this.orders = response.data)
+      this.getUnconfirmedOrders()
+      this.getConfirmedOrders()
+    },
+
+    getUnconfirmedOrders() {
+      OrderService.sendGetAllOrdersRequest('Kinnitamata')
+          .then(response => this.unconfirmedOrders = response.data)
+          .catch(error => console.log(error))
+    },
+
+
+    getConfirmedOrders() {
+      OrderService.sendGetAllOrdersRequest('Kinnitatud')
+          .then(response => this.confirmedOrders = response.data)
           .catch(error => console.log(error))
     },
 
