@@ -72,7 +72,7 @@ export default {
     },
 
     getOrders() {
-      OrderService.sendGetAllOrdersRequest(this.userId)
+      OrderService.sendGetOrdersRequest(this.userId)
           .then(response => this.orders = response.data)
           .catch(error => console.log(error))
     },
