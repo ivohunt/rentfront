@@ -157,7 +157,7 @@ export default {
   },
   mounted(){
     this.getOrderInfo();
-    // this.getOrderItems();
+    this.getOrderItems();
 
   }
 }
