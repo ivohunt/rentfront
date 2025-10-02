@@ -10,7 +10,7 @@
       <AlertGood :message="successMessage"/>
 
       <div v-if="hasOpenOrder">
-        <div>Algus: {{ newOrder.start }} Lõpp: {{ newOrder.end }}</div>
+        <div>Algus: {{ existingOrder.start }} Lõpp: {{ existingOrder.end }}</div>
       </div>
       <div v-else class="row">
         <div class="col-4">
@@ -38,12 +38,28 @@
           <button
               v-for="category in categories"
               :key="category.categoryId"
-              @click="onCategorySelected(category.categoryId, category.sizeTypeId)"
+              @click="onCategorySelected(category.availableItems)"
               class="btn btn-outline-primary m-1"
           >
             {{ category.categoryName }}
           </button>
         </div>
+
+        <table v-if="availableItems.length > 0" class="table">
+          <thead>
+          <tr>
+            <th scope="col">Kirjeldus</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr v-for="availableItem in availableItems" >
+            <td>
+              <button @click="addToOrder(availableItem.itemId)">{{availableItem.notes}}</button></td>
+          </tr>
+          </tbody>
+        </table>
+
+
 
         <div v-if="equipmentSizes.length">
           <h4>Available Items</h4>
@@ -102,13 +118,33 @@ export default {
         userId: sessionStorage.getItem('userId')
       },
       existingOrder: {
+        orderId: 0,
+        orderNumber: '',
         start: '',
         end: '',
-        userId: sessionStorage.getItem('userId')
+        status: '',
+        totalPrice: 0,
+        userId: 0
       },
 
-      categories: [],
-      selectedCategoryId: null,
+      availableItems: [],
+
+      categories: [
+        {
+          categoryId: 0,
+          categoryName: '',
+          price: 0,
+          availableItems: [
+            {
+              itemId: 0,
+              status: '',
+              notes: '',
+              equipmentSizeId: 0
+            }
+          ]
+        }
+      ],
+      selectedCategoryId: 0,
       equipmentSizes: [],
       selectedEquipmentSizeId: null,
       orderItems: [],
@@ -117,6 +153,15 @@ export default {
     }
   },
   methods: {
+
+    addToOrder(itemId) {
+      alert(itemId)
+      // todo: POST /item?orderId=this.orderId&itemId=itemId
+      // peale happy responset käivitada:
+      // this.getAvailableCategories(this.existingOrder.start, this.existingOrder.end)
+      this.availableItems = []
+
+    },
 
 
     createOrder() {
@@ -143,7 +188,7 @@ export default {
       sessionStorage.setItem('orderId', orderId)
       sessionStorage.setItem('userHasOpenOrder', this.hasOpenOrder)
       // Fetch available categories for step 2
-      this.getAvailableCategories();
+      this.getAvailableCategories(this.newOrder.start, this.newOrder.end);
     },
 
     handleCreateOrderError(error) {
@@ -156,13 +201,8 @@ export default {
       this.successMessage = '';
     },
 
-    getAvailableCategories() {
-      if (!this.newOrder.start || !this.newOrder.end) {
-        this.errorMessage = "Palun vali algus- ja lõppkuupäev";
-        return;
-      }
-
-      CategoryService.getAvailableCategories(this.newOrder.start, this.newOrder.end)
+    getAvailableCategories(start, end) {
+      CategoryService.getAvailableCategories(start, end)
           .then(response => {
             this.categories = response.data;
             this.errorMessage = '';
@@ -173,18 +213,17 @@ export default {
           });
     },
 
-    onCategorySelected(categoryId) {
-      this.selectedCategoryId = categoryId;
-
-      // Call service to get equipment sizes/items for this category
-      EquipmentSizeService.getAvailableItems(categoryId)
-          .then(response => {
-            this.equipmentSizes = response.data;
-          })
-          .catch(err => {
-            console.error("Error loading equipment sizes:", err);
-            this.errorMessage = "Ei saanud suurusi laadida";
-          });
+    onCategorySelected(availableItems) {
+      this.availableItems =  availableItems
+      // // Call service to get equipment sizes/items for this category
+      // EquipmentSizeService.getAvailableItems(categoryId)
+      //     .then(response => {
+      //       this.equipmentSizes = response.data;
+      //     })
+      //     .catch(err => {
+      //       console.error("Error loading equipment sizes:", err);
+      //       this.errorMessage = "Ei saanud suurusi laadida";
+      //     });
     },
 
     addItemToOrder(item) {
@@ -219,11 +258,15 @@ export default {
             .catch(() => NavigationService.navigateToAvailableEquipmentView())
     },
     getExistingOrder() {
-      OrderService.getExistingOrder(orderId)
-          .then((response) => this.existingOrder = response.data)
+      OrderService.getExistingOrder(this.orderId)
+          .then((response) => this.handleGetExistingOrderResponse(response))
           .catch(() => this.errorMessage = "Ei leitud avatud tellimust")
     },
 
+    handleGetExistingOrderResponse(response) {
+      this.existingOrder = response.data
+      this.getAvailableCategories(this.existingOrder.start, this.existingOrder.end)
+    }
   },
   mounted() {
     this.hasOpenOrder = SessionStorageService.userHasOpenOrder()

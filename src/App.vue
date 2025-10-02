@@ -13,7 +13,11 @@
     </template>
 
     <template v-if="isCustomer">
-      <router-link to="/available-equipment">Saadaval varustus</router-link> |
+      <router-link v-if="userHasOpenOrder" :to="{ path: '/available-equipment', query: { orderId: orderId } }">
+        Saadaval varustus
+      </router-link>
+      <router-link v-else to="/available-equipment">Saadaval varustus</router-link> |
+
       <router-link to="/order-history">Varasemad tellimused</router-link> |
       <template v-if="userHasOpenOrder">
         <font-awesome-icon @click="navigateToOrderConfirmationView" class="cursor-pointer me-3" icon="fa-solid fa-cart-shopping" />
