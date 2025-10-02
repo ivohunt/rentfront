@@ -119,12 +119,12 @@ export default {
     addItem() {
       ItemService.sendPostAddItem(this.item)
           .then(() => this.successMessage = "Varustus lisatud",
-          this.item = {
-        categoryId: 0,
-            notes: '',
-            equipmentSizeId: 0,
-            itemImageData: '',
-      })
+              this.item = {
+                categoryId: 0,
+                notes: '',
+                equipmentSizeId: 0,
+                itemImageData: '',
+              })
           .catch(() => NavigationService.navigateToErrorView())
     },
 
