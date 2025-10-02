@@ -24,11 +24,10 @@ import EquipmentSizeService from "@/service/EquipmentSizeService";
 export default {
   name: 'EquipmentSizesDropdown',
   props: {
-    equipmentSizes: Array,
     selectedEquipmentSizeId: Number,
     selectedSizeTypeId: {
       type: Number,
-      default: 'default'
+      default: 0
     }
   },
   watch: {
@@ -44,7 +43,12 @@ export default {
 
   data() {
     return {
-
+      equipmentSizes: [
+        {
+          equipmentSizeId: 0,
+          equipmentSizeName: ''
+        }
+      ]
     }
   },
   methods: {
