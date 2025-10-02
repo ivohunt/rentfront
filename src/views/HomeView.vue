@@ -1,16 +1,10 @@
 <template>
   <div>
 
-    <div class="container text-center">
-      <div class="row">
-        <div class="col">
-          <h2>
-           Kirjutan muud
-          </h2>
-        </div>
-      </div>
+    <div>
+      <div class="mx-auto">
+        <img src="../assets/avalehe_bg.png" width="1450"/></div>
     </div>
-
   </div>
 </template>
 

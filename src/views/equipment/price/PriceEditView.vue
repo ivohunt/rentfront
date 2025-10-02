@@ -2,7 +2,10 @@
   <div>
 
     <div>
-      <table class="table w-25 mx-auto">
+      <h1>Hinnad ja kategooriad</h1>
+    </div>
+    <div>
+      <table class="table table-hover mb-5 w-25 mx-auto">
         <thead>
         <tr>
           <th scope="col">Kategooria</th>
@@ -22,7 +25,9 @@
         </tbody>
       </table>
     </div>
-
+<div>
+  <h1>Lisa uus kategooria</h1>
+</div>
 
     <div class="row col-6 mx-auto">
 
@@ -160,7 +165,7 @@ export default {
           this.successMessage = ''
         },
 
-        deleteCategory(category){
+        deleteCategory(category) {
           CategoryService.sendDeleteCategoryRequest(category.categoryId)
               .then(() => {
                 this.$emit('event-category-successfully-deleted')

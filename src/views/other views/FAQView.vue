@@ -1,6 +1,6 @@
 <template>
 
-  <div class="faq">
+  <div class="faq w-75 mx-auto">
     <h2>Korduma kippuvad küsimused</h2>
     <div v-for="(item, index) in faqs"
          :key="index"

@@ -1,15 +1,15 @@
 <template>
   <div class="container text-center">
     <div>
-      <h4>Rendihinnad 2025/2026a hooajale</h4>
-      <table class="table mx-auto w-25">
+      <h1>Rendihinnad</h1>
+      <table class=" table table-hover mx-auto w-25">
         <thead>
         <tr>
           <th scope="col">Varustus</th>
           <th scope="col">Hind päevas €</th>
         </tr>
         </thead>
-        <tbody class="table-group-divider">
+        <tbody >
         <tr v-for="category in categories" :key="category.categoryId">
           <th scope="row"> {{ category.categoryName }}</th>
           <td>{{ category.price }}</td>

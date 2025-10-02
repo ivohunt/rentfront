@@ -4,6 +4,17 @@
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #20303d;
+    background-color: #f7f7f7;
+    background-size: 100%;
+    height: 100vh;
+}
+
+html, body {
+    height: 100%;
+}
+
+.full-height {
+    height: 100%;
 }
 
 nav {
@@ -11,27 +22,45 @@ nav {
     text-transform: uppercase;
     font-size: 25px;
     padding: 30px;
+    color: #20303d;
 }
 
+
 nav a:hover {
-    font-family: Boogaloo;
     text-transform: uppercase;
-    font-size: 25px;
-    padding: 30px;
+    font-size: 26px;
 }
 
 nav a {
     font-weight: bold;
-    color: #fcc02e;
-}
-
-nav a.router-link-exact-active {
     color: #039be6;
 }
 
-table {
-    font-size: 0.8em;
+nav a.router-link-exact-active {
+    color: #fcc02e;
+}
 
+table {
+    font-size: 1em;
+    background-color: #f7f7f7;
+    line-height: 1.5em;
+}
+
+.table th {
+    background-color: #f7f7f7;
+}
+
+.btn-primary {
+    color: #039be6;
+}
+
+ul {
+    line-height: normal;
+    font-size: 25px;
+}
+
+h1 {
+    padding-bottom: 20px;
 }
 
 
