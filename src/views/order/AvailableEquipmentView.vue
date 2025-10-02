@@ -216,6 +216,9 @@ export default {
           });
     },
 
+    onCategorySelected(availableItems) {
+      this.availableItems = availableItems
+    },
 
     addItemToOrder(item) {
       if (!this.newOrder.orderId) {
