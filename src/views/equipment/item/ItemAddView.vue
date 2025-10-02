@@ -2,7 +2,10 @@
 
   <div>
     <div>
-      <AlertGood :message="successMessage"/>
+      <div class="row col-4 mx-auto">
+        <AlertGood :message="successMessage"/>
+      </div>
+
       <h1>
         Uue ühiku lisamine
       </h1>
@@ -115,7 +118,13 @@ export default {
 
     addItem() {
       ItemService.sendPostAddItem(this.item)
-          .then(() => this.successMessage = "Varustus lisatud")
+          .then(() => this.successMessage = "Varustus lisatud",
+          this.item = {
+        categoryId: 0,
+            notes: '',
+            equipmentSizeId: 0,
+            itemImageData: '',
+      })
           .catch(() => NavigationService.navigateToErrorView())
     },
 
