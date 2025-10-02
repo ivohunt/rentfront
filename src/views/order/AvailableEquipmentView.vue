@@ -216,6 +216,9 @@ export default {
           });
     },
 
+    onCategorySelected(availableItems) {
+      this.availableItems = availableItems
+    },
 
     addItemToOrder(item) {
       if (!this.newOrder.orderId) {
@@ -242,12 +245,6 @@ export default {
           });
     },
 
-    // getOpenOrder() {
-    //   if (sessionStorageService.userHasOpenOrder())
-    //     OrderService.getOpenOrder(orderId)
-    //         .then((response) => this.newOrder = response.data)
-    //         .catch(() => NavigationService.navigateToAvailableEquipmentView())
-    // },
     getExistingOrder() {
       OrderService.getExistingOrder(this.orderId)
           .then((response) => this.handleGetExistingOrderResponse(response))
@@ -262,11 +259,8 @@ export default {
   mounted() {
     this.hasOpenOrder = SessionStorageService.userHasOpenOrder()
     this.orderId = SessionStorageService.getOrderId()
-
-    // todo
     if (this.hasOpenOrder) {
       this.getExistingOrder(this.orderId)
-      // too ära this.orderId järgi andmed this.existingOrder jaoks andmed (GET /midagi/midagi?orderId=x)
     }
   }
 }
