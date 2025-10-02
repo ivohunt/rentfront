@@ -62,6 +62,7 @@ export default {
       selectedCategoryId: 0,
       selectedEquipmentSizeId: 0,
       selectedSizeTypeId:0,
+      notes: '',
 
 
         categories: [
