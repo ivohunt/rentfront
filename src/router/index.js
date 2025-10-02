@@ -74,7 +74,7 @@ const routes = [
     },
 
     {
-        path: '/orders/all',
+        path: '/orders/admin',
         name: 'ordersAdminRoute',
         component: OrdersAdminView
     },

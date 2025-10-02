@@ -1,59 +1,75 @@
 <template>
 
   <div class="container text-center ">
-    <div class="row">
-      <div class="col">
+    <div class="row justify-content-center">
+      <div class="col col-4">
+        <AlertSad :message="errorMessage"/>
         <h2>Ühe tellimuse haldus</h2>
+      </div>
+    </div>
+    <div class="row justify-content-center mb-5">
+      <div class="col col-4">
+        <table class="table table-dark table-hover">
+          <thead>
+          <tr>
+            <th>Tellimuse number</th>
+            <td>{{ orderInfo.orderNumber }}</td>
+          </tr>
+          <tr>
+            <th>Algus</th>
+            <td> {{ orderInfo.start }}</td>
+          </tr>
+          <tr>
+            <th>Lõpp</th>
+            <td>{{ orderInfo.end }}</td>
+          </tr>
+          <tr>
+            <th>Eesnimi</th>
+            <td>{{ orderInfo.userFirstName }}</td>
+          </tr>
+          <tr>
+            <th>Perekonnanimi</th>
+            <td>{{ orderInfo.userLastName }}</td>
+          </tr>
+          <tr>
+            <th>Kliendi email</th>
+            <td>{{ orderInfo.userEmail }}</td>
+          </tr>
+          <tr>
+            <th>Kliendi telefon</th>
+            <td>{{ orderInfo.userPhone }}</td>
+          </tr>
+          <tr>
+            <th>Staatus</th>
+            <td>{{ orderInfo.status }}</td>
+          </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+    <div class="row justify-content-center mb-5">
+      <div class="col col-4">
+          <h2>Tellitud varustus</h2>
+        <table class="table table-hover table-dark">
+          <thead>
+          <tr>
+            <th scope="col">Varustuse tüüp</th>
+            <th scope="col">Suurus</th>
+            <th scope="col">Hind</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>?</td>
+            <td>?</td>
+            <td>?</td>
+          </tr>
+          </tbody>
+        </table>
       </div>
     </div>
 
 
-    <table class="table w-10 col col-4">
-      <thead>
-      <tr>
-        <th>Tellimuse number</th>
-        <td>{{ order.orderNumber }}</td>
-      </tr>
-      <tr>
-        <th>Algus</th>
-        <td> {{ order.start }}</td>
-      </tr>
-      <tr>
-        <th>Lõpp</th>
-        <td>{{ order.end }}</td>
-      </tr>
-      <tr>
-        <th>Eesnimi</th>
-        <td>{{ order.userFirstName }}</td>
-      </tr>
-      <tr>
-        <th>Perekonnanimi</th>
-        <td>{{ order.userLastName }}</td>
-      </tr>
-      <tr>
-        <th>Kliendi email</th>
-        <td>{{ order.userEmail }}</td>
-      </tr>
-      <tr>
-        <th>Kliendi telefon</th>
-        <td>{{ order.userPhone }}</td>
-      </tr>
-      <tr>
-        <th>Staatus</th>
-        <td>{{ order.status}}</td>
-      </tr>
-      <tr>
-        <th>Lisatud varustus</th>
-        <td>
-        <div v-for="orderItem in orderItems">
-          <p>item id: {{orderItem.itemId}}</p>
-          <p>category id: {{orderItem.categoryId}}</p>
-          <p>equipmentSize id: {{orderItem.equipmentSizeId}}</p>
-        </div>
-        </td>
-      </tr>
-      </thead>
-    </table>
 
     <div>
       <div>
@@ -73,18 +89,20 @@
 
 <script>
 import OrderService from "@/service/OrderService";
+import {useRoute} from "vue-router";
+import AlertSad from "@/components/alert/AlertSad.vue";
 
 export default {
   name: 'OrderEditView',
+  components: {AlertSad},
   data() {
     return {
-
-
+      orderId:  Number(useRoute().query.orderId),
       userId: Number(sessionStorage.getItem('userId')),
       errorMessage: '',
       successMessage: '',
 
-      order: {
+      orderInfo: {
         orderNumber: '',
         start: '',
         end: '',
@@ -94,30 +112,23 @@ export default {
         userPhone: '',
         userEmail: '',
       },
-      orderItems: [{
-        itemId: '',
-        categoryId: '',
-        equipmentSizeId:'',
-
-      }],
+      orderItems: [
+        {
+          categoryName: '',
+          equipmentSize: '',
+          price: 0
+        }
+      ],
 
     }
   },
   methods: {
 
-    getOrderById() {
-      const orderId = this.$route.query.orderId;
-      console.log(orderId)
+    getOrderInfo() {
 
-      OrderService.getOrderById(orderId)
-          .then(response => {
-            console.log(response.data);
-            this.order = response.data
-          })
-          .catch(error => {
-            console.log(error);
-            this.errorMessage = 'Tellimuse andmete laadimine ebaõnnestus';
-          });
+      OrderService.sendGetCustomerOrdersRequest(this.orderId)
+          .then(response => this.orderInfo = response.data)
+          .catch(() => this.errorMessage = 'Tellimuse andmete laadimine ebaõnnestus');
     },
 
     getOrderItems() {
@@ -135,11 +146,18 @@ export default {
             console.log(error);
             this.errorMessage = 'Tellimuse andmete laadimine ebaõnnestus';
           });
-    }
+    },
+
+    resetAllMessages() {
+      this.errorMessage = ''
+      this.successMessage = ''
+    },
+
+
   },
   mounted(){
-    this.getOrderById();
-    this.getOrderItems();
+    this.getOrderInfo();
+    // this.getOrderItems();
 
   }
 }
