@@ -10,7 +10,25 @@ export default {
     },
 
     navigateToErrorView() {
-        router.push({name: 'errorRoute'})
+        // todo ülives sisse kommentterida
+        // router.push({name: 'errorRoute'})
+    },
+
+    navigateToAvailableEquipmentView() {
+        router.push({name: 'availableEquipmentRoute'})
+    },
+
+    navigateToOpenOrder() {
+        router.push({name: 'openOrderView'})
+    },
+
+    navigateToOrderConfirmationView(orderId) {
+        router.push({
+            name: 'orderConfirmationRoute',
+            query: {
+                orderId: orderId
+            }
+        })
     },
 
     navigateToOrderEditView(orderId) {

@@ -21,7 +21,7 @@ export default {
     categories: Array,
     selectedCategoryId: {
       type: Number,
-      default: 'default'
+      default: 0
     }
   },
 

@@ -88,6 +88,7 @@ table {
     text-align: center;
 }
 
+
 .col-4 {
     display: flex;
     flex-direction: column;
@@ -109,6 +110,3 @@ table {
 .cursor-pointer:hover {
     color: #c37cef;
 }
-
-
-
