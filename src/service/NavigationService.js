@@ -18,6 +18,10 @@ export default {
         router.push({name: 'availableEquipmentRoute'})
     },
 
+    navigateToOrderAdminView() {
+        router.push({name: 'orderAdminRoute'})
+    },
+
     navigateToOpenOrder() {
         router.push({name: 'openOrderView'})
     },

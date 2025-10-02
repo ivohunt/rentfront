@@ -64,6 +64,7 @@ export default {
           status: ''
         }
       ]
+
     }
   },
   methods: {
@@ -72,7 +73,7 @@ export default {
     },
 
     getOrders() {
-      OrderService.sendGetOrdersRequest(this.userId)
+      OrderService.sendGetAllOrdersRequest()
           .then(response => this.orders = response.data)
           .catch(error => console.log(error))
     },

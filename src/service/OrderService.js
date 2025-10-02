@@ -2,13 +2,12 @@ import axios from "axios";
 
 export default {
 
-    createOrder(order) {
-        return axios.post(`/order`, order);
+    sendGetAllOrdersRequest() {
+        return axios.get('/orders/all');
     },
 
-
-    finalizeOrder(orderId, orderData) {
-        return axios.put(`/orders/${orderId}`, orderData);
+    sendPostOrderRequest(order) {
+        return axios.post('/order', order);
     },
 
     addItemToOrder(orderItemDto) {

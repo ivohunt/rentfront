@@ -36,6 +36,7 @@
 import AlertSad from "@/components/alert/AlertSad.vue";
 import LoginService from "@/service/LoginService.js";
 import NavigationService from "@/service/NavigationService";
+import SessionStorageService from "@/service/SessionStorageService";
 
 export default {
   name: 'LoginView',
@@ -82,13 +83,14 @@ export default {
       sessionStorage.setItem("userHasOpenOrder", this.loginResponse.userHasOpenOrder);
       sessionStorage.setItem("orderId", this.loginResponse.orderId);
 
-      // Emit and redirect
       this.$emit("event-user-logged-in");
 
-      if (this.loginResponse.userHasOpenOrder) {
-        NavigationService.navigateToOrderConfirmationView(this.loginResponse.orderId)
+      if (this.loginResponse.roleName === 'admin') {
+        NavigationService.navigateToOrderAdminView()
+      } else if (this.loginResponse.userHasOpenOrder) {
+        NavigationService.navigateToOrderConfirmationView(this.loginResponse.orderId);
       } else {
-        NavigationService.navigateToAvailableEquipmentView()
+        NavigationService.navigateToAvailableEquipmentView();
       }
 
     },

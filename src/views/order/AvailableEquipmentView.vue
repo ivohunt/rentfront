@@ -70,12 +70,6 @@
           </ul>
         </div>
 
-        <div class="mt-3">
-          <button @click="finalizeOrder" class="btn btn-primary" :disabled="!orderItems.length">
-            Finalize Order
-          </button>
-        </div>
-
         <div v-if="errorMessage" class="text-danger mt-2">{{ errorMessage }}</div>
         <div v-if="successMessage" class="text-success mt-2">{{ successMessage }}</div>
       </div>
@@ -133,7 +127,7 @@ export default {
         return;
       }
 
-      OrderService.createOrder(this.newOrder)
+      OrderService.sendPostOrderRequest(this.newOrder)
           .then(response => this.handleCreateOrderResponse(response))
           .catch(error => this.handleCreateOrderError(error));
     },
@@ -215,16 +209,6 @@ export default {
             console.error(err);
             this.errorMessage = "Failed to add item to order.";
             setTimeout(() => (this.errorMessage = ""), 3000);
-          });
-    },
-
-    finalizeOrder() {
-      OrderService.finalizeOrder(this.newOrder.orderId)
-          .then(() => {
-            this.successMessage = "Order finalized!";
-          })
-          .catch(() => {
-            this.errorMessage = "Failed to finalize order.";
           });
     },
 
