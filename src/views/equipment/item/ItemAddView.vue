@@ -97,7 +97,7 @@ export default {
     },
 
     getEquipmentSizes(sizeTypeId) {
-      EquipmentSizeService.sendGetEquipmentSizesRequest(sizeTypeId)
+      EquipmentSizeService.getAvailableItems(sizeTypeId)
           .then((response) => (this.equipmentSizes = response.data))
           .catch((error) => console.error(error));
     },
