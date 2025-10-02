@@ -3,7 +3,7 @@ import axios from "axios";
 export default {
 
     sendPatchOrderRequest(orderId, status) {
-        return axios.patch('/order', {
+        return axios.patch('/order',null, {
             params: {
                 orderId: orderId,
                 status: status
@@ -25,16 +25,6 @@ export default {
 
     addItemToOrder(orderItemDto) {
         return axios.post('/order-items', orderItemDto);
-    },
-
-    getOrdersByUser(userId) {
-        return axios.get(`/orders`, {
-            params: {userId}
-        });
-    },
-
-    deleteOrder(orderId) {
-        return axios.delete(`/orders/${orderId}`);
     },
 
 

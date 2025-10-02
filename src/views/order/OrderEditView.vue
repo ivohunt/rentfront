@@ -1,9 +1,13 @@
 <template>
 
-  <div class="container text-center ">
+<div class="col-5 mx-auto">
+  <AlertGood :message="successMessage"/>
+  <AlertSad :message="errorMessage"/>
+</div>
+
+  <div >
     <div class="row justify-content-center">
-      <div class="col col-4">
-        <AlertSad :message="errorMessage"/>
+      <div class="col col-5">
         <h2>Ühe tellimuse haldus</h2>
       </div>
     </div>
@@ -70,23 +74,27 @@
     </div>
 
 
-    <div>
-      <div>
-        <button v-if="orderIsUnconfirmed" @click="updateStatusToConfirmed" class="btn btn-outline-primary"
+    <div class="row mx-auto col-6">
+      <div class="col-4 mx-auto">
+        <button @click="printPage" class="btn btn-outline-primary">Prindi PDF</button>
+      </div>
+
+      <div class="col-4 mx-auto">
+        <button v-if="orderIsUnconfirmed" @click="updateStatusToConfirmed" class="btn btn-primary"
                 type="submit">Kinnita tellimus
         </button>
-      </div>
-      <div>
-        <button v-if="orderIsConfirmed" @click="updateStatusToActivate" class="btn btn-outline-primary " type="submit">
+
+        <button v-if="orderIsConfirmed" @click="updateStatusToActivate" class="btn btn-primary" type="submit">
           Aktiveeri tellimus
         </button>
-        <button class="btn btn-outline-primary" type="submit">Prindi PDF</button>
-      </div>
-      <div>
-        <button v-if="orderIsActivated" @click="updateStatusToFinished" class="btn btn-outline-primary" type="submit">
+
+        <button v-if="orderIsActivated" @click="updateStatusToFinished" class="btn btn-primary" type="submit">
           Lõpeta tellimus
         </button>
       </div>
+
+
+
     </div>
   </div>
 
@@ -97,10 +105,11 @@ import OrderService from "@/service/OrderService";
 import {useRoute} from "vue-router";
 import AlertSad from "@/components/alert/AlertSad.vue";
 import NavigationService from "@/service/NavigationService";
+import AlertGood from "@/components/alert/AlertGood.vue";
 
 export default {
   name: 'OrderEditView',
-  components: {AlertSad},
+  components: {AlertGood, AlertSad},
   data() {
     return {
       orderId: Number(useRoute().query.orderId),
@@ -148,7 +157,7 @@ export default {
       this.orderInfo = response.data
       this.orderIsUnconfirmed = this.orderInfo.status === 'Kinnitamata'
       this.orderIsConfirmed = this.orderInfo.status === 'Kinnitatud'
-      this.orderIsActivated = this.orderInfo.status === 'Aktiivne'
+      this.orderIsActivated = this.orderInfo.status === 'Aktiveeritud'
       this.orderIsFinished = this.orderInfo.status === 'Lõpetatud'
     },
 
@@ -195,6 +204,10 @@ export default {
       this.successMessage = "Tellimus lõpetatud"
       setTimeout(this.resetAllMessages, 3000)
       this.getOrderInfo()
+    },
+
+    printPage() {
+      window.print();
     },
 
     resetAllMessages() {
