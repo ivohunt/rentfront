@@ -2,11 +2,11 @@
   <div class="container text-center">
     <div class="row justify-content-center">
       <div class="col col-8">
-        <h2>Kinnitamata tellimused</h2>
-        <OrdersTable class="table table-hover mb-5" :orders="unconfirmedOrders"/>
+        <h2>Kasutaja kinnitatud tellimused</h2>
+        <OrdersTable class="table table-hover mb-5" :orders="userConfirmedOrders"/>
 
-        <h2>Kinnitatud tellimused</h2>
-        <OrdersTable class="table table-hover mb-5" :orders="confirmedOrders"/>
+        <h2>Admini kinnitatud tellimused</h2>
+        <OrdersTable class="table table-hover mb-5" :orders="adminConfirmedOrders"/>
 
         <h2>Aktiivsed tellimused</h2>
         <OrdersTable class="table table-hover mb-5" :orders="activeOrders"/>
@@ -35,7 +35,7 @@ export default {
       errorMessage: '',
       successMessage: '',
 
-      unconfirmedOrders: [
+      userConfirmedOrders: [
         {
           orderId: 0,
           orderNumber: '',
@@ -45,7 +45,7 @@ export default {
           status: ''
         }
       ],
-      confirmedOrders: [
+      adminConfirmedOrders: [
         {
           orderId: 0,
           orderNumber: '',
@@ -89,15 +89,15 @@ export default {
     },
 
     getUnconfirmedOrders() {
-      OrderService.sendGetAllOrdersRequest('Kinnitamata')
-          .then(response => this.unconfirmedOrders = response.data)
+      OrderService.sendGetAllOrdersRequest('Kasutaja kinnitatud')
+          .then(response => this.userConfirmedOrders = response.data)
           .catch(error => console.log(error))
     },
 
 
     getConfirmedOrders() {
-      OrderService.sendGetAllOrdersRequest('Kinnitatud')
-          .then(response => this.confirmedOrders = response.data)
+      OrderService.sendGetAllOrdersRequest('Admini kinnitatud')
+          .then(response => this.adminConfirmedOrders = response.data)
           .catch(error => console.log(error))
     },
 

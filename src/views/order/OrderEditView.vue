@@ -155,8 +155,8 @@ export default {
 
     handleGetOrderInfoResponse(response) {
       this.orderInfo = response.data
-      this.orderIsUnconfirmed = this.orderInfo.status === 'Kinnitamata'
-      this.orderIsConfirmed = this.orderInfo.status === 'Kinnitatud'
+      this.orderIsUnconfirmed = this.orderInfo.status === 'Kasutaja kinnitatud'
+      this.orderIsConfirmed = this.orderInfo.status === 'Admini kinnitatud'
       this.orderIsActivated = this.orderInfo.status === 'Aktiveeritud'
       this.orderIsFinished = this.orderInfo.status === 'Lõpetatud'
     },
@@ -171,7 +171,7 @@ export default {
     },
 
     updateStatusToConfirmed() {
-      OrderService.sendPatchOrderRequest(this.orderId, "Kinnitatud")
+      OrderService.sendPatchOrderRequest(this.orderId, "Admini kinnitatud")
           .then(() => this.handleUpdateStatusToConfirmedResponse())
           .catch(() => NavigationService.navigateToErrorView())
     },

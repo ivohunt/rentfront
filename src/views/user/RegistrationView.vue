@@ -4,70 +4,64 @@
       <h1>Uue kasutaja loomine</h1>
     </div>
 
-
-    <div class="row col-4 mx-auto">
+    <div class="col-5 mx-auto">
 
       <AlertSad :message="errorMessage"/>
       <AlertGood :message="successMessage"/>
 
-      <div class="col">
-        <div class="form-floating mb-3">
-          <input v-model="user.firstName" type="text" class="form-control" placeholder="Eesnimi">
-          <label for="floatingInput">Eesnimi</label>
+      <!-- First + Last name in same row -->
+      <div class="row">
+        <div class="col-6">
+          <div class="form-floating mb-3">
+            <input v-model="user.firstName" type="text" class="form-control" placeholder="Eesnimi">
+            <label>Eesnimi</label>
+          </div>
         </div>
 
-      </div>
-
-      <div class="col">
-        <div class="form-floating">
+        <div class="col-6">
           <div class="form-floating mb-3">
             <input v-model="user.lastName" type="text" class="form-control" placeholder="Perenimi">
-            <label for="floatingInput">Perenimi</label>
+            <label>Perenimi</label>
           </div>
         </div>
       </div>
-    </div>
 
-
-    <div class="row col-4 mx-auto">
-      <div>
-        <div class="form-floating mb-3">
-          <input v-model="user.email" type="email" class="form-control" placeholder="E-mail">
-          <label for="floatingInput">E-mail</label>
-        </div>
+      <!-- Email -->
+      <div class="form-floating mb-3">
+        <input v-model="user.email" type="email" class="form-control" placeholder="E-mail">
+        <label>E-mail</label>
       </div>
 
-      <div>
-        <div class="form-floating mb-3">
-          <input v-model="user.telephone" type="text" class="form-control" placeholder="Telefon">
-          <label for="floatingInput">Telefon</label>
-        </div>
+      <!-- Telephone -->
+      <div class="form-floating mb-3">
+        <input v-model="user.telephone" type="text" class="form-control" placeholder="Telefon">
+        <label>Telefon</label>
       </div>
 
-
-      <div class="col">
-        <div class="form-floating mb-3">
-          <input v-model="user.password" type="password" class="form-control" placeholder="Parool">
-          <label for="floatingInput">Parool</label>
+      <div class="row">
+        <div class="col-6">
+          <div class="form-floating mb-3">
+            <input v-model="user.password" type="password" class="form-control" placeholder="Parool">
+            <label>Parool</label>
+          </div>
         </div>
 
-      </div>
-
-      <div class="col">
-        <div class="form-floating">
+        <div class="col-6">
           <div class="form-floating mb-3">
             <input v-model="passwordRetype" type="password" class="form-control" placeholder="Parool uuesti">
-            <label for="floatingInput">Parool uuesti</label>
+            <label>Parool uuesti</label>
           </div>
         </div>
       </div>
 
-      <button @click="registerUser" class="btn btn-primary mb-3" type="submit">Registreeri uus kasutaja</button>
+      <div class="text-center">
+        <button @click="registerUser" class="btn btn-primary mb-3" type="submit">
+          Registreeri uus kasutaja
+        </button>
+      </div>
 
     </div>
   </div>
-
-
 </template>
 
 <script>
@@ -97,16 +91,22 @@ export default {
   methods: {
 
     registerUser() {
-
-
       this.findIfInputFieldsAreFilled()
       this.findIfPasswordMatch()
-      if (this.errorMessage === '') {
-        UserService.sendPostUserRegistrationRequest(this.user)
-            .then(() => this.handleAddUserResponse())
-            .catch(error => this.handleAddUserError(error))
-      } else NavigationService.navigateToErrorView()
-      NavigationService.navigateToLoginView()
+
+      if (this.errorMessage !== '') {
+        return
+      }
+
+      UserService.sendPostUserRegistrationRequest(this.user)
+          .then(() => {
+            this.handleAddUserResponse()
+            NavigationService.navigateToLoginView()
+          })
+          .catch(error => {
+            this.handleAddUserError(error)
+            NavigationService.navigateToErrorView()
+          })
     },
 
 

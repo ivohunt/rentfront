@@ -31,7 +31,7 @@
 
     </div>
 
-    <div>
+    <div >
       <div>
         <h3>Varustuse kategooriad</h3>
         <div class="categories">
@@ -162,9 +162,6 @@ export default {
           .then(()=> this.successMessage = "Ühik lisatud tellimusele " + this.existingOrder.orderNumber)
           .catch(() => NavigationService.navigateToErrorView())
 
-
-      // todo: POST /item?orderId=this.orderId&itemId=itemId
-      // peale happy responset käivitada:
       this.getAvailableCategories(this.existingOrder.start, this.existingOrder.end)
       this.availableItems = []
 
@@ -181,12 +178,12 @@ export default {
           .then(response => this.handleCreateOrderResponse(response))
           .catch(error => this.handleCreateOrderError(error));
       this.getAvailableCategories()
+      location.reload()
     },
 
     handleCreateOrderResponse(response) {
-      // Axios response usually wraps data inside .data
       let orderId = response.data
-      // this.getExistingOrder(this.orderId)
+      this.getExistingOrder(this.orderId)
       this.successMessage = 'Tellimus loodud';
       this.errorMessage = '';
       console.log("Order created:", response.data);
@@ -257,12 +254,12 @@ export default {
           });
     },
 
-    getOpenOrder() {
-      if (sessionStorageService.userHasOpenOrder())
-        OrderService.getOpenOrder(orderId)
-            .then((response) => this.newOrder = response.data)
-            .catch(() => NavigationService.navigateToAvailableEquipmentView())
-    },
+    // getOpenOrder() {
+    //   if (sessionStorageService.userHasOpenOrder())
+    //     OrderService.getOpenOrder(orderId)
+    //         .then((response) => this.newOrder = response.data)
+    //         .catch(() => NavigationService.navigateToAvailableEquipmentView())
+    // },
     getExistingOrder() {
       OrderService.getExistingOrder(this.orderId)
           .then((response) => this.handleGetExistingOrderResponse(response))

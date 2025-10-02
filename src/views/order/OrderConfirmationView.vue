@@ -36,26 +36,28 @@
         </thead>
       </table>
 
-          <h2>Tellitud varustus</h2>
-          <table class="table table-hover">
-            <thead>
-            <tr>
-              <th scope="col">Varustuse tüüp</th>
-              <th scope="col">Suurus</th>
-              <th scope="col">Hind</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="orderItem in orderItems" :key="orderItem.orderItemId">
-              <td>{{ orderItem.categoryName }}</td>
-              <td>{{ orderItem.equipmentSize }}</td>
-              <td>{{ orderItem.price }}</td>
-            </tr>
-            </tbody>
-          </table>
+      <h2>Tellitud varustus</h2>
+      <table class="table table-hover">
+        <thead>
+        <tr>
+          <th scope="col">Varustuse tüüp</th>
+          <th scope="col">Suurus</th>
+          <th scope="col">Hind</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="orderItem in orderItems" :key="orderItem.orderItemId">
+          <td>{{ orderItem.categoryName }}</td>
+          <td>{{ orderItem.equipmentSize }}</td>
+          <td>{{ orderItem.price }}</td>
+        </tr>
+        </tbody>
+      </table>
 
       <div>
-        <button @click="" type="button" class="btn btn-outline-primary me-3">Alusta uut</button>
+        <button @click="navigateToAvailableEquipmentView" type="button" class="btn btn-outline-primary me-3">Lisa
+          varustust
+        </button>
         <button @click="updateStatusToUnconfirmed" type="button" class="btn btn-primary ">Kinnita tellimus</button>
       </div>
     </div>
@@ -109,7 +111,6 @@ export default {
     },
 
     getOrderItems() {
-      console.log('getting orderitems')
       const orderId = this.$route.query.orderId;
 
       OrderService.getOrderItems(orderId)
@@ -117,10 +118,38 @@ export default {
           .catch(() => this.errorMessage = 'Tellimuse andmete laadimine ebaõnnestus');
     },
 
+    orderOpenAlert() {
+      this.successMessage = "Sul on tellimus pooleli. Kinnita või alusta uut"
+    },
+
     updateStatusToUnconfirmed() {
-      OrderService.sendPatchOrderRequest(this.orderId, "Kinnitamata")
+      OrderService.sendPatchOrderRequest(this.orderId, "Kasutaja kinnitatud")
           .then(() => this.handleUpdateStatusToConfirmedResponse())
           .catch(() => NavigationService.navigateToErrorView())
+
+    },
+
+    handleUpdateStatusToConfirmedResponse() {
+      this.successMessage = "Tellimus kinnitatud"
+      setTimeout(this.resetAllMessages, 3000)
+      this.getExistingOrder()
+      this.getOrderItems();
+    },
+
+    getExistingOrder() {
+      OrderService.getExistingOrder(this.orderId)
+          .then((response) => this.handleGetExistingOrderResponse(response))
+          .catch(() => this.errorMessage = "Ei leitud avatud tellimust")
+    },
+
+    handleGetExistingOrderResponse(response) {
+      this.order = response.data
+    },
+
+
+    navigateToAvailableEquipmentView() {
+      NavigationService.navigateToAvailableEquipmentView()
+
     },
 
 
@@ -128,6 +157,7 @@ export default {
   mounted() {
     this.getOpenOrder(this.userId)
     this.getOrderItems();
+    this.orderOpenAlert()
   }
 }
 </script>

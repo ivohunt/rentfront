@@ -8,7 +8,7 @@
     <div class="row justify-content-center">
 
       <div class="col-5">
-        <AlertSad :message="errorMessage"/>
+        <AlertSad :message="errorResponse.message"/>
         <div class="form-floating mb-3 ">
           <input v-model="email" type="email" class="form-control" placeholder="admin@admin.ee">
           <label for="floatingInput">Email aadress</label>

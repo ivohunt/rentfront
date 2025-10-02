@@ -1,55 +1,69 @@
 <template>
-  <LogoutModal :modal-is-open="modalIsOpen"
-               @event-close-modal="closeLogoutModal"
-               @event-execute-logout="executeLogout"
-  />
-  <nav>
-    <router-link to="/">Avaleht</router-link> |
+  <div class="app-container">
+    <LogoutModal :modal-is-open="modalIsOpen"
+                 @event-close-modal="closeLogoutModal"
+                 @event-execute-logout="executeLogout"
+    />
+    <nav>
+            <font-awesome-icon @click="navigateToHomeView" class="cursor-pointer ms-3" icon="fa-solid fa-house"/>
+      |
 
-    <template v-if="isAdmin">
-      <router-link to="/orders/admin">Tellimused</router-link>|
-      <router-link to="/price-edit">Hinnad & kategooriad</router-link> |
-      <router-link to="/add-item">Varustuse lisamine</router-link> |
-    </template>
-
-    <template v-if="isCustomer">
-      <router-link v-if="userHasOpenOrder" :to="{ path: '/available-equipment', query: { orderId: orderId } }">
-        Saadaval varustus
-      </router-link>
-      <router-link v-else to="/available-equipment">Saadaval varustus</router-link> |
-
-      <router-link to="/order-history">Varasemad tellimused</router-link> |
-      <template v-if="userHasOpenOrder">
-        <font-awesome-icon @click="navigateToOrderConfirmationView" class="cursor-pointer me-3" icon="fa-solid fa-cart-shopping" />
+      <template v-if="isAdmin">
+        <router-link to="/orders/admin">Tellimused</router-link>
+        |
+        <router-link to="/price-edit">Hinnad & kategooriad</router-link>
+        |
+        <router-link to="/add-item">Varustuse lisamine</router-link>
+        |
       </template>
-      <template>
 
+      <template v-if="isCustomer">
+        <router-link v-if="userHasOpenOrder" :to="{ path: '/available-equipment', query: { orderId: orderId } }">
+          Saadaval varustus
+        </router-link>
+        <router-link v-else to="/available-equipment">Saadaval varustus</router-link>
+        |
+
+        <router-link to="/order-history">Minu tellimused</router-link>
+        |
+        <template v-if="userHasOpenOrder">
+          <font-awesome-icon @click="navigateToOrderConfirmationView" class="cursor-pointer me-3"
+                             icon="fa-solid fa-cart-shopping"/>
+        </template>
+        <template>
+
+        </template>
       </template>
-    </template>
 
-    <template v-if="!isLoggedIn">
-      <router-link to="/prices">Hinnad</router-link> |
-      <router-link to="/FAQ">KKK</router-link> |
-      <router-link to="/contact">Kontakt</router-link> |
-    </template>
+      <template v-if="!isLoggedIn">
+        <router-link to="/prices">Hinnad</router-link>
+        |
+        <router-link to="/FAQ">KKK</router-link>
+        |
+        <router-link to="/contact">Kontakt</router-link>
+        |
+      </template>
 
-    <template v-if="isLoggedIn">
-      <font-awesome-icon @click="startLogout" type="button" icon="fa-solid fa-right-from-bracket"/>
-    </template>
+      <template v-if="isLoggedIn">
+        <font-awesome-icon @click="startLogout" type="button" icon="fa-solid fa-right-from-bracket"/>
+      </template>
 
-    <template v-if="!isLoggedIn">
-      <router-link to="/login">Logi sisse</router-link>
-    </template>
-  </nav>
+      <template v-if="!isLoggedIn">
+        <router-link to="/login">Logi sisse</router-link>
+      </template>
+    </nav>
 
-  <router-view @event-user-logged-in="updateNavMenu"/>
+    <router-view @event-user-logged-in="updateNavMenu"/>
+
+    <img src="@/assets/parem_nurk.png" class="corner-image right" height="250" width="250"/>
+    <img src="@/assets/vasak_nurk.png" class="corner-image left" height="250" width="250"/>
+  </div>
 </template>
 
 <script>
 import SessionStorageService from "@/service/SessionStorageService";
 import NavigationService from "@/service/NavigationService";
 import LogoutModal from "@/components/modal/LogoutModal.vue";
-import OrderService from "@/service/OrderService";
 
 export default {
   name: 'App',
@@ -96,6 +110,10 @@ export default {
       NavigationService.navigateToOrderConfirmationView(this.orderId)
     },
 
+    navigateToHomeView() {
+      NavigationService.navigateToHomeView()
+    },
+
   },
 
   mounted() {
@@ -103,3 +121,4 @@ export default {
   }
 }
 </script>
+
