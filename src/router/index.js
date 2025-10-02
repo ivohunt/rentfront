@@ -14,6 +14,7 @@ import FAQView from "@/views/other views/FAQView.vue";
 import ContactView from "@/views/other views/ContactView.vue";
 import ItemAddView from "@/views/equipment/item/ItemAddView.vue";
 import EquipmentView from "@/views/equipment/item/EquipmentView.vue";
+import OrderEditView from "@/views/order/OrderEditView.vue";
 
 
 const routes = [
@@ -44,6 +45,12 @@ const routes = [
         path: '/price-edit',
         name: 'priceEditRoute',
         component: PriceEditView
+    },
+
+    {
+        path: '/order-edit',
+        name: 'orderEditRoute',
+        component: OrderEditView
     },
 
     {
