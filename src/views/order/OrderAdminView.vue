@@ -1,12 +1,18 @@
 <template>
   <div class="container text-center">
     <div class="row justify-content-center">
-      <div class="col col-7">
+      <div class="col col-8">
         <h2>Kinnitamata tellimused</h2>
-        <OrdersTable :orders="unconfirmedOrders"/>
+        <OrdersTable class="table table-hover mb-5" :orders="unconfirmedOrders"/>
 
         <h2>Kinnitatud tellimused</h2>
-        <OrdersTable :orders="confirmedOrders"/>
+        <OrdersTable class="table table-hover mb-5" :orders="confirmedOrders"/>
+
+        <h2>Aktiivsed tellimused</h2>
+        <OrdersTable class="table table-hover mb-5" :orders="activeOrders"/>
+
+        <h2>Lõpetatud tellimused</h2>
+        <OrdersTable class="table table-hover mb-5" :orders="finishedOrders"/>
       </div>
 
     </div>
@@ -78,6 +84,8 @@ export default {
     getOrders() {
       this.getUnconfirmedOrders()
       this.getConfirmedOrders()
+      this.getActiveOrders()
+      this.getFinishedOrders()
     },
 
     getUnconfirmedOrders() {
@@ -90,6 +98,18 @@ export default {
     getConfirmedOrders() {
       OrderService.sendGetAllOrdersRequest('Kinnitatud')
           .then(response => this.confirmedOrders = response.data)
+          .catch(error => console.log(error))
+    },
+
+    getActiveOrders() {
+      OrderService.sendGetAllOrdersRequest('Aktiivne')
+          .then(response => this.activeOrders = response.data)
+          .catch(error => console.log(error))
+    },
+
+    getFinishedOrders() {
+      OrderService.sendGetAllOrdersRequest('Lõpetatud')
+          .then(response => this.finishedOrders = response.data)
           .catch(error => console.log(error))
     },
 
