@@ -10,39 +10,48 @@
         Uue ühiku lisamine
       </h1>
     </div>
-    <div class="row col-4 mx-auto">
-
-
-      <ItemAddImg :image-data="item.itemImageData"/>
-
-      <ImageInput @event-new-image-selected="setItemAddImageData"/>
-
-      <CategoriesDropdown class="mb-3"
-                          :categories="categories"
-                          :selectedCategoryId="item.categoryId"
-                          @event-new-category-selected="handleSelectedCategoryChange"/>
-
-      <EquipmentSizesDropdown :selected-size-type-id="selectedSizeTypeId"
-                              :selected-equipment-size-id="item.equipmentSizeId"
-                              @event-new-equipment-size-selected="onEquipmentSizeSelected"
-      />
-    </div>
-
-    <div class="row mt-5 mb-5 justify-content-center">
-      <div class="col-4">
-        <input v-model="item.notes" type="text"
-               class="form-control form-control-text border border-secondary rounded px-100" placeholder="Notes">
-      </div>
-    </div>
-
 
     <div>
-      <div class="form-floating mt-5 mb-5">
-        <button @click="addItem" type="submit" class="btn btn-primary">Lisa</button>
+
+      <div :style="{ display: 'flex', justifyContent: 'center', gap: '20px', marginTop: '5px'}">
+        <ItemAddImg :image-data="item.itemImageData"/>
+        <div :style="{ display: 'flex', justifyContent: 'left', gap: '0px', marginTop: '200px' }" class="col-2">
+          <ImageInput @event-new-image-selected="setItemAddImageData"/>
+        </div>
+      </div>
+
+      <div class="row col-4 mx-auto">
+
+
+
+
+
+        <CategoriesDropdown class="mb-3"
+                            :categories="categories"
+                            :selectedCategoryId="item.categoryId"
+                            @event-new-category-selected="handleSelectedCategoryChange"/>
+
+        <EquipmentSizesDropdown :selected-size-type-id="selectedSizeTypeId"
+                                :selected-equipment-size-id="item.equipmentSizeId"
+                                @event-new-equipment-size-selected="onEquipmentSizeSelected"
+        />
+      </div>
+
+
+
+      <div :style="{ display: 'flex', justifyContent: 'center', gap: '20px', marginTop: '5px'}">
+        <div class="form-floating mt-5 mb-5">
+          <div class="row mt-5 mb-5 justify-content-center">
+            <div class="col-4">
+              <input v-model="item.notes" type="text"
+                     class="form-control form-control-text border border-secondary rounded px-100" placeholder="Notes">
+            </div>
+          </div>
+
+          <button @click="addItem" type="submit" class="btn btn-primary">Lisa</button>
+        </div>
       </div>
     </div>
-
-
   </div>
 
 </template>
