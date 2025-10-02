@@ -6,7 +6,7 @@
       </div>
     </div>
 
-    <table class=" col col-6 table-hover mx-auto">
+    <table class="table col col-6 table-hover mx-auto">
       <thead>
       <tr>
         <th scope="col">Tellimuse number</th>

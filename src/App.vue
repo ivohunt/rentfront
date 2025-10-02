@@ -7,7 +7,7 @@
     <router-link to="/">Avaleht</router-link> |
 
     <template v-if="isAdmin">
-      <router-link to="/all-orders">Tellimused</router-link> |
+      <router-link to="/orders/admin">Tellimused</router-link> |
       <router-link to="/price-edit">Hinnad & kategooriad</router-link> |
       <router-link to="/add-item">Varustuse lisamine</router-link> |
     </template>
@@ -30,9 +30,6 @@
     </template>
 
     <template v-if="isLoggedIn">
-      <div>
-        Sisse logitud userId: {{ userId }}
-      </div>
       <font-awesome-icon @click="startLogout" type="button" icon="fa-solid fa-right-from-bracket"/>
     </template>
 

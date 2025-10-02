@@ -3,9 +3,9 @@
     <div>
       <h1>Tellimuse kinnitamine</h1>
     </div>
-    <div class="col-4 mx-auto">
+    <div class="col-5 mx-auto">
 
-      <table class="table ">
+      <table class="table table-hover">
         <thead>
         <tr>
           <th scope="col">Tellimuse number</th>

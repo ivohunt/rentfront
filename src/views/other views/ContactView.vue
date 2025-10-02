@@ -2,13 +2,12 @@
   <div class="container text-center">
     <div class="row">
       <div class="col">
-        <h2>
-          ReeDe Villa suusarent on avatud:
-        </h2>
+        <h1>
+          Suusarent on avatud:
+        </h1>
         <ul
             v-for="(item, index) in items" :key="index">
           {{ item }}
-
         </ul>
       </div>
     </div>
@@ -16,7 +15,7 @@
     <div>
       <iframe
           src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2110.9861881266543!2d26.492497!3d58.05578599999999!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46eb111f6bdde4a1%3A0xa3ed7d28bc78af76!2sReeDe%20Suusarent!5e0!3m2!1sen!2sus!4v1758870953349!5m2!1sen!2sus"
-          width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+          width="800" height="450" style="border:0;" allowfullscreen="" loading="lazy"
           referrerpolicy="no-referrer-when-downgrade"></iframe>
     </div>
 
